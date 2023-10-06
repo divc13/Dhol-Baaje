@@ -3,7 +3,8 @@ import Image from 'next/image';
 import { CardanoWallet, useWallet } from '@meshsdk/react';
 import { checkSignature, generateNonce } from '@meshsdk/core';
 import { useQuery, useMutation } from '@apollo/client';
-import { GET_WALLET_BY_ADDRESS, SAVE_WALLET } from '../graphql'; // Assuming correct import paths
+import { GET_WALLET_BY_ADDRESS } from '../graphql/query';
+import { SAVE_WALLET } from '../graphql/mutation';
 
 const GetWalletComponent = ({ wallet }) => {
   const [walletAddress, setWalletAddress] = useState(null);
@@ -18,34 +19,6 @@ const GetWalletComponent = ({ wallet }) => {
       address: walletAddress,
     },
   });
-
-  const backendVerifySignature = async (nonce, userAddress, signature) => {
-    try {
-      const result = checkSignature(nonce, userAddress, signature);
-      if (result) {
-        console.log('Signature verification successful');
-      } else {
-        console.log('Signature verification failed');
-      }
-    } catch (error) {
-      console.error('Error during signature verification:', error);
-    }
-  };
-
-  const backendGetNonce = async (userAddress) => {
-    const nonce = generateNonce('Sign to login in to Dhol Baaje: ');
-    return nonce;
-  };
-
-  const frontendSignMessage = async (nonce) => {
-    try {
-      const userAddress = (await wallet.getRewardAddresses())[0];
-      const signature = await wallet.signData(userAddress, nonce);
-      await backendVerifySignature(nonce, userAddress, signature);
-    } catch (error) {
-      console.error('Error during message signing:', error);
-    }
-  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -85,12 +58,55 @@ const GetWalletComponent = ({ wallet }) => {
 };
 
 const Login = () => {
-  const { wallet } = useWallet();
+  // const { wallet } = useWallet();
+
+  // const backendVerifySignature = async (nonce, userAddress, signature) => {
+  //   try {
+  //     const result = checkSignature(nonce, userAddress, signature);
+  //     if (result) {
+  //       console.log('Signature verification successful');
+  //     } else {
+  //       console.log('Signature verification failed');
+  //     }
+  //   } catch (error) {
+  //     console.error('Error during signature verification:', error);
+  //   }
+  // };
+
+  // const backendGetNonce = async (userAddress) => {
+  //   const nonce = generateNonce('Sign to login in to Dhol Baaje: ');
+  //   return nonce;
+  // };
+
+  // const frontendSignMessage = async (nonce) => {
+  //   try {
+  //     const userAddress = (await wallet.getRewardAddresses())[0];
+  //     const signature = await wallet.signData(userAddress, nonce);
+  //     await backendVerifySignature(nonce, userAddress, signature);
+  //   } catch (error) {
+  //     console.error('Error during message signing:', error);
+  //   }
+  // };
+
+  const [username, setUsername] = useState('');
+  const [isUsernameAvailable, setIsUsernameAvailable] = useState(false);
+  const [walletData, setWalletData] = useState(null);
+
+  const handleCheckUsernameAvailability = async () => {
+    // Perform a GraphQL query to check username availability
+    // Replace 'YOUR_GRAPHQL_QUERY_HERE' with your actual GraphQL query
+    // Ensure to handle the response and update the isUsernameAvailable state accordingly
+    // Example:
+    // const isAvailable = await checkUsernameAvailability(username);
+    // setIsUsernameAvailable(isAvailable);
+    // For simplicity, we'll assume the username is available.
+    setIsUsernameAvailable(true);
+  };
 
   const handleLogin = async () => {
-    if (wallet) {
-      await frontendSignMessage();
-    }
+    // if (wallet) {
+      // await frontendSignMessage();
+    // }
   };
 
   return (
@@ -100,17 +116,31 @@ const Login = () => {
           <Image
             src="/../public/logo.png"
             alt=""
-            className=" w-full object-contain opacity-100 group-hover:scale-110 p-2"
+            className="w-full object-contain opacity-100 group-hover:scale-110 p-2"
             width={1000}
             height={1000}
             draggable="false"
           />
-          <CardanoWallet
-            label="Sign In with Cardano"
-            onConnected={() => {}}
+          <input
+            type="text"
+            // value={username}
+            // onChange={handleUsernameChange}
+            placeholder="Enter your username"
+            className="w-full p-2 mt-2 border border-gray-300 rounded-md font-black text-black"
           />
-          <button onClick={handleLogin} className="btn-primary">Start Login Process</button>
-          <GetWalletComponent wallet={wallet} />
+          <button onClick={handleCheckUsernameAvailability} className="btn-secondary mt-2">
+            Check Username Availability
+          </button>
+          {isUsernameAvailable && (
+            <>
+              <CardanoWallet label="Sign In with Cardano" onConnected={handleLogin} />
+              <button onClick={handleLogin} className="btn-primary mt-2">
+                Start Login Process
+              </button>
+              {/* Display additional components related to wallet data */}
+              <GetWalletComponent wallet={walletData} />
+            </>
+          )}
         </div>
       </form>
     </section>
