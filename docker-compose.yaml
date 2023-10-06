@@ -162,7 +162,7 @@ services:
       postgres:
         condition: service_healthy
     volumes:
-      - ${DOCKER_VOLUMES_PATH}/blockfrost-config:/app/config
+      - ./config/blockfrost_config:/app/config
     restart: on-failure
     logging:
       driver: 'json-file'

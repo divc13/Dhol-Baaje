@@ -92,6 +92,11 @@ const Login = () => {
   const [isUsernameAvailable, setIsUsernameAvailable] = useState(false);
   const [walletData, setWalletData] = useState(null);
 
+  const handleUsernameChange = (event) => {
+    const newUsername = event.target.value;
+    setUsername(newUsername);
+  };
+
   const handleCheckUsernameAvailability = async () => {
     // Perform a GraphQL query to check username availability
     // Replace 'YOUR_GRAPHQL_QUERY_HERE' with your actual GraphQL query
@@ -123,22 +128,20 @@ const Login = () => {
           />
           <input
             type="text"
-            // value={username}
-            // onChange={handleUsernameChange}
+            onChange={handleUsernameChange}
             placeholder="Enter your username"
             className="w-full p-2 mt-2 border border-gray-300 rounded-md font-black text-black"
           />
-          <button onClick={handleCheckUsernameAvailability} className="btn-secondary mt-2">
+          <div onClick={handleCheckUsernameAvailability} className="center btn-secondary mt-2 bg-green-600 text-white px-4 py-2 my-4 rounded hover:bg-green-800 text-center">
             Check Username Availability
-          </button>
+          </div>
           {isUsernameAvailable && (
             <>
               <CardanoWallet label="Sign In with Cardano" onConnected={handleLogin} />
-              <button onClick={handleLogin} className="btn-primary mt-2">
+              <button onClick={handleLogin} className="btn-primary mt-2 ">
                 Start Login Process
               </button>
-              {/* Display additional components related to wallet data */}
-              <GetWalletComponent wallet={walletData} />
+              {/* <GetWalletComponent wallet={walletData} /> */}
             </>
           )}
         </div>

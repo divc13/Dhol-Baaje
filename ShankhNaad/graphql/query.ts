@@ -1,5 +1,41 @@
 import { gql } from '@apollo/client';
 
+export const GET_USER_WITH_USERNAME = gql`
+    query FindUSER{
+    userFindAll {
+        id
+        subjectId
+        username
+        wallet {
+            id
+            subjectId
+            name
+            walletId
+            address
+            publicKey
+            balance
+            assets {
+                    id
+                subjectId
+                name
+                fingerprint
+                policyId
+                quantity
+                metadata
+                assetSubjectId
+                logosphereId
+                createdAt
+                updatedAt
+            }
+            createdAt
+            updatedAt
+        }
+        createdAt
+        updatedAt
+    }
+    }
+`;
+
 export const GET_ALL_SONGS = gql`
     query GetAllSongs {
         trackFindAll{

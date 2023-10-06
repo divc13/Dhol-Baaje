@@ -6,7 +6,7 @@ import { TrackProvider } from "../hooks/trackContext";
 import { ApolloProvider } from '@apollo/client';
 import client from '../apollo/client';
 import MusicDataProvider from '../components/MusicDataContext';
-import { MeshProvider } from "@martifylabs/mesh-react"
+import { MeshProvider } from "@meshsdk/react"
 
 
 export default function App({
