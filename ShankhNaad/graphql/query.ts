@@ -92,9 +92,9 @@ export const GET_ALL_SONGS = gql`
 `;
 
 
-export const GET_WALLET_BY_ADDRESS = gql`
-    query GetWalletByAddress ($address: String!) {
-        walletFindOneByAddress(address: $address){
+export const GET_ALL_WALLETS = gql`
+    query GetAllWallet{
+        walletFindAll{
             id
             subjectId
             name

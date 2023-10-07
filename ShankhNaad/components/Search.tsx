@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
 import Link from "next/link";
 import { MusicNoteIcon } from "@heroicons/react/solid";
-import { useWallet } from "@martifylabs/mesh-react";
+import { useWallet } from "@meshsdk/react";
 import { LogoutIcon } from "@heroicons/react/outline";
 
 type SearchProps = {

@@ -40,3 +40,8 @@ export const likeTracksState = atom<Track[]>({
   key: "5",
   default: [],
 });
+
+export const UserAddress = atom({
+  key: "6",
+  default: '',
+});

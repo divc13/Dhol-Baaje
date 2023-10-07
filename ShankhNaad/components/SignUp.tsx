@@ -3,106 +3,107 @@ import Image from 'next/image';
 import { CardanoWallet, useWallet } from '@meshsdk/react';
 import { checkSignature, generateNonce } from '@meshsdk/core';
 import { useQuery, useMutation } from '@apollo/client';
-import { GET_WALLET_BY_ADDRESS, GET_USER_WITH_USERNAME } from '../graphql/query';
+import { GET_ALL_WALLETS, GET_USER_WITH_USERNAME } from '../graphql/query';
 import { SAVE_WALLET } from '../graphql/mutation';
-
-const GetWalletComponent = ({ wallet }) => {
-    const [walletAddress, setWalletAddress] = useState(null);
-    const { loading, error, data } = useQuery(GET_WALLET_BY_ADDRESS, {
-        variables: {
-            address: walletAddress,
-        },
-    });
-
-    const [saveWallet] = useMutation(SAVE_WALLET, {
-        variables: {
-            address: walletAddress,
-        },
-    });
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                if (wallet) {
-                    const address = await wallet.getChangeAddress();
-                    setWalletAddress(address);
-                }
-            } catch (error) {
-                console.error('Error fetching wallet address:', error);
-            }
-        };
-
-        fetchData();
-    }, []); // Empty dependency array for component mount
-
-    useEffect(() => {
-        if (data) {
-            // Handle data from the query (data represents the result of GET_WALLET_BY_ADDRESS query)
-            console.log('Fetched wallet data:', data);
-        }
-
-        if (error) {
-            console.error('Error fetching wallet data:', error);
-        }
-
-        if (!data) {
-            // If data is not available, perform saveWallet mutation
-            saveWallet();
-        }
-    }, [data, error, saveWallet]);
-
-    if (loading) return <p>Loading...</p>;
-
-    // Return any other components or UI based on the fetched data
-    return null;
-};
+import { useSetRecoilState } from "recoil";
+import { UserAddress } from "../atoms/playerAtom";
 
 const signup = () => {
 
     const [username, setUsername] = useState('');
-    const [isUsernameAvailable, setIsUsernameAvailable] = useState('a');
-    const [walletData, setWalletData] = useState(null);
-
+    const [isUsernameAvailable, setIsUsernameAvailable] = useState('Waiting for Username');
+    const { wallet, connected, disconnect } = useWallet();
+    const [validity, setValidity] = useState('Waiting for Wallet');
+    const setAddress = useSetRecoilState(UserAddress);
+    
     const handleUsernameChange = (event) => {
         const newUsername = event.target.value;
         setUsername(newUsername);
     };
 
     const { loading, error, data } = useQuery(GET_USER_WITH_USERNAME);
+    const [Save_Wallet] = useMutation(SAVE_WALLET);
+    async function backendGetNonce(userAddress) {
+      const nonce = generateNonce('Sign up to Dhol Baaje: ');
+      return nonce;
+    }
+    
+    async function backendVerifySignature(nonce, userAddress, signature) {
+      const result = checkSignature(nonce, userAddress, signature);
+      if (result) {
+          console.log("success");
+          const addr = await wallet.getChangeAddress();
+          if (data && data.userFindAll.some(user => user.wallet.address === addr)){
+            setValidity('Wallet already Registered');
+            disconnect();
+          }
+          else
+          {
+            // Save_Wallet(
+            //   variables: {
+            //     user: {
+            //         title: formData.title,
+            //     }
+            // }
+            // )
+            setAddress(addr);
+            setValidity('User Logged In');
+          }
+        }
+        else {
+            console.log("fail");
+          }
+        }
+  
+    async function frontendStartLoginProcess() {
+      if (connected) {
+        const userAddress = (await wallet.getRewardAddresses())[0];
+            const nonce = await backendGetNonce(userAddress);
+            await frontendSignMessage(nonce);
+        }
+    }
+    
+    async function frontendSignMessage(nonce) {
+        // try {
+          const userAddress = (await wallet.getRewardAddresses())[0];
+          const signature = await wallet.signData(userAddress, nonce);
+          await backendVerifySignature(nonce, userAddress, signature);
+        // } catch (error) {
+        //     console.log("failure");
+        // }
+      }
+  
+       
 
     const handleCheckUsernameAvailability = async () => {
 
-        if (loading) {
-            console.log('Loading...');
-            return;
-        }
+        // if (loading) {
+        //     console.log('Loading...');
+        //     return;
+        // }
 
-        if (error) {
-            // Handle error state if needed
-            console.error('Error:', error);
-            return;
-        }
+        // if (error) {
+        //     // Handle error state if needed
+        //     console.error('Error:', error);
+        //     return;
+        // }
 
-        // Check if the username is available
+        // // Check if the username is available
 
         console.log(data);
-        if (data.userFindAll.length === 0 || !data.userFindAll.some(user => user.username === username)){
-            setIsUsernameAvailable('b');
+        if (!data || data.userFindAll.length === 0 || !data.userFindAll.some(user => user.username === username)){
+            setIsUsernameAvailable('Getting Wallet');
         }
         else{
-            setIsUsernameAvailable('c');
+            setIsUsernameAvailable('Username Already Taken');
         }
-    };
-
-    const handleLogin = async () => {
-
     };
     
     console.log(isUsernameAvailable);
     return (
         <section className="w-screen mb-32 sm:mb-20 md:w-[calc(100vw-120px)] ml-2 sm:ml-24 py-4 space-y-8 md:mr-2.5 md:max-w-[79rem] flex sm:justify-center sm:items-center h-screen">
           <form className="w-full p-4 bg-black rounded-md shadow-lg flex justify-center items-center h-screen">
-            <div className="text-center w-full sm:w-1/4 md:w-5/12 transform -translate-y-11 align-items-center">
+            <div className="w-full sm:w-1/4 md:w-5/12 transform -translate-y-11 flex flex-col items-center">
               <Image
                 src="/../public/logo.png"
                 alt=""
@@ -111,7 +112,7 @@ const signup = () => {
                 height={1000}
                 draggable="false"
               />
-              {isUsernameAvailable === 'a' && (
+              {isUsernameAvailable === 'Waiting for Username' && (
                 <div>
                   <input
                     type="text"
@@ -119,22 +120,52 @@ const signup = () => {
                     placeholder="Enter your username"
                     className="w-full p-2 mt-2 border border-gray-300 rounded-md font-black text-black"
                   />
-                  <div
+                  <button
                     onClick={handleCheckUsernameAvailability}
-                    className="center btn-secondary mt-2 bg-green-600 text-white px-4 py-2 my-4 rounded hover:bg-green-800 text-center"
+                    className="btn-secondary mt-2 bg-green-600 text-white px-4 py-2 my-4 rounded hover:bg-green-800 text-center w-full"
                   >
                     Check Username Availability
-                  </div>
+                  </button>
                 </div>
               )}
-              {isUsernameAvailable === 'b' && (
+              {isUsernameAvailable === 'Getting Wallet' 
+              && ((
+                validity === 'Waiting for Wallet' &&
+                <CardanoWallet label="Sign In with Cardano" onConnected={() => frontendStartLoginProcess()} />
+              )
+              || (
+                validity === 'User Logged In' &&
                 <>
-                  <CardanoWallet label="Sign In with Cardano" onConnected={handleLogin} />
-                  {/* <GetWalletComponent wallet={walletData} /> */}
+                  <CardanoWallet label="Sign In with Cardano" />
+                  <div>Now you can access all pages!!</div>
                 </>
+              )
+              || (
+                validity === 'Wallet already Registered' &&
+                <>
+                  <CardanoWallet label="Sign In with Cardano" onConnected={() => frontendStartLoginProcess()} />
+                  <div>This wallet is already registered.</div>
+                </>
+              )
               )}
-              {isUsernameAvailable === 'c' && (
-                <p className="text-red-500">Username not available. Please choose a different username.</p>
+              {isUsernameAvailable === 'Username Already Taken' && (
+                <>
+                <div>
+                  <input
+                    type="text"
+                    onChange={handleUsernameChange}
+                    placeholder="Enter your username"
+                    className="w-full p-2 mt-2 border border-gray-300 rounded-md font-black text-black"
+                  />
+                  <button
+                    onClick={handleCheckUsernameAvailability}
+                    className="btn-secondary mt-2 bg-green-600 text-white px-4 py-2 my-4 rounded hover:bg-green-800 text-center w-full"
+                  >
+                    Check Username Availability
+                  </button>
+                  <p className="text-red-500">Username `{username}` not available. Please choose a different username.</p>
+              </div>
+              </>
               )}
             </div>
           </form>
