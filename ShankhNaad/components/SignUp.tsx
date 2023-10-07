@@ -118,16 +118,16 @@ const signup = () => {
             draggable="false"
           />
           {isUsernameAvailable === 'Waiting for Username' && (
-            <div>
+            <div className="contents">
               <input
                 type="text"
                 onChange={handleUsernameChange}
-                placeholder="Enter your username"
-                className="w-full p-2 mt-2 border border-gray-300 rounded-md font-black text-black"
+                placeholder="Enter Your Username"
+                className="w-9/12 p-2 mt-2 border border-gray-300 rounded-md text-center text-black"
               />
               <button
                 onClick={handleCheckUsernameAvailability}
-                className="btn-secondary mt-2 bg-green-600 text-white px-4 py-2 my-4 rounded hover:bg-green-800 text-center w-full"
+                className="mt-2 transparent border border-white text-white px-4 py-2 my-4 rounded hover:bg-green-700 text-center w-9/12"
               >
                 Check Username Availability
               </button>
@@ -163,19 +163,19 @@ const signup = () => {
               )))}
           {isUsernameAvailable === 'Username Already Taken' && (
             <>
-              <div>
-                <input
-                  type="text"
-                  onChange={handleUsernameChange}
-                  placeholder="Enter your username"
-                  className="w-full p-2 mt-2 border border-gray-300 rounded-md font-black text-black"
-                />
-                <button
-                  onClick={handleCheckUsernameAvailability}
-                  className="btn-secondary mt-2 bg-green-600 text-white px-4 py-2 my-4 rounded hover:bg-green-800 text-center w-full"
-                >
-                  Check Username Availability
-                </button>
+              <div className="contents">
+              <input
+                type="text"
+                onChange={handleUsernameChange}
+                placeholder="Enter Your Username"
+                className="w-9/12 p-2 mt-2 border border-gray-300 rounded-md text-center text-black"
+              />
+              <button
+                onClick={handleCheckUsernameAvailability}
+                className="mt-2 transparent border border-white text-white px-4 py-2 my-4 rounded hover:bg-green-700 text-center w-9/12"
+              >
+                Check Username Availability
+              </button>
                 <p className="text-red-500 flex flex:row py-2">
                   Username <p className="text-green-500 px-2">{username}</p> not
                   available. Please choose a different username.
