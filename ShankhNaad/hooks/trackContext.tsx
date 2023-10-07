@@ -59,7 +59,6 @@ export const TrackProvider = ({ children }: { children: ReactNode }) => {
             music: track.music,
             image: track.image,
             likes: track.likes,
-            dislikes: track.dislikes,
             description: track.description,
             album: track.album,
             n_listens: track.n_listens + 1,

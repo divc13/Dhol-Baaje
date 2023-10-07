@@ -2,6 +2,60 @@ import { gql } from '@apollo/client';
 
 export const SAVE_TRACK = gql`
 mutation trackCreate($track: TrackInput!) {
+        trackSave(track: $track) {
+        id
+        subjectId
+        key
+        title
+        subtitle
+        owner {
+                id
+            subjectId
+            username
+            wallet {
+                    id
+                subjectId
+                name
+                walletId
+                address
+                publicKey
+                balance
+                assets {
+                    id
+                subjectId
+                name
+                fingerprint
+                policyId
+                quantity
+                metadata
+                assetSubjectId
+                logosphereId
+                createdAt
+                updatedAt
+                }
+                createdAt
+                updatedAt
+            }
+            createdAt
+            updatedAt
+        }
+        music
+        image
+        likes
+        n_listens
+        description
+        album
+        value
+        purchasable
+        nftCardanoTxId
+        createdAt
+        updatedAt
+    }
+}
+`;
+
+export const MINT_TRACK = gql`
+mutation trackCreate($track: TrackInput!) {
         trackMintNft(track: $track) {
         id
         subjectId
@@ -122,6 +176,93 @@ mutation userCreate($user: UserInput!) {
         }
         createdAt
         updatedAt
+    }
+}
+`;
+
+export const LIKE_TRACK = gql`
+mutation trackLike($track: TrackInput!) {
+    likedTracksSave(track: $track) {
+        track{
+            id
+            subjectId
+            key
+            title
+            subtitle
+            owner {
+                    id
+                subjectId
+                username
+                wallet {
+                        id
+                    subjectId
+                    name
+                    walletId
+                    address
+                    publicKey
+                    balance
+                    assets {
+                        id
+                    subjectId
+                    name
+                    fingerprint
+                    policyId
+                    quantity
+                    metadata
+                    assetSubjectId
+                    logosphereId
+                    createdAt
+                    updatedAt
+                    }
+                    createdAt
+                    updatedAt
+                }
+                createdAt
+                updatedAt
+            }
+            music
+            image
+            likes
+            n_listens
+            description
+            album
+            value
+            purchasable
+            nftCardanoTxId
+            createdAt
+            updatedAt
+        }
+    user{
+        id
+        subjectId
+        username
+        wallet {
+            id
+            subjectId
+            name
+            walletId
+            address
+            publicKey
+            balance
+            assets {
+                    id
+                subjectId
+                name
+                fingerprint
+                policyId
+                quantity
+                metadata
+                assetSubjectId
+                logosphereId
+                createdAt
+                updatedAt
+            }
+            createdAt
+            updatedAt
+        }
+        createdAt
+        updatedAt
+    }
     }
 }
 `;

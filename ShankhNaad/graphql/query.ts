@@ -47,8 +47,7 @@ export const GET_ALL_SONGS = gql`
             owner {
                     id
                 subjectId
-                email
-                image
+                username
                 wallet {
                     id
                 subjectId
@@ -79,7 +78,6 @@ export const GET_ALL_SONGS = gql`
             music
             image
             likes
-            dislikes
             n_listens
             description
             album
@@ -90,7 +88,6 @@ export const GET_ALL_SONGS = gql`
         }
     }
 `;
-
 
 export const GET_ALL_WALLETS = gql`
     query GetAllWallet{
@@ -119,4 +116,91 @@ export const GET_ALL_WALLETS = gql`
             updatedAt
         }
     }
+`;
+
+export const GET_LIKED_TRACK = gql`
+query trackLikedAll {
+    likedTracksFindAll {
+        track{
+            id
+            subjectId
+            key
+            title
+            subtitle
+            owner {
+                    id
+                subjectId
+                username
+                wallet {
+                        id
+                    subjectId
+                    name
+                    walletId
+                    address
+                    publicKey
+                    balance
+                    assets {
+                        id
+                    subjectId
+                    name
+                    fingerprint
+                    policyId
+                    quantity
+                    metadata
+                    assetSubjectId
+                    logosphereId
+                    createdAt
+                    updatedAt
+                    }
+                    createdAt
+                    updatedAt
+                }
+                createdAt
+                updatedAt
+            }
+            music
+            image
+            likes
+            n_listens
+            description
+            album
+            value
+            purchasable
+            nftCardanoTxId
+            createdAt
+            updatedAt
+        }
+    user{
+        id
+        subjectId
+        username
+        wallet {
+            id
+            subjectId
+            name
+            walletId
+            address
+            publicKey
+            balance
+            assets {
+                    id
+                subjectId
+                name
+                fingerprint
+                policyId
+                quantity
+                metadata
+                assetSubjectId
+                logosphereId
+                createdAt
+                updatedAt
+            }
+            createdAt
+            updatedAt
+        }
+        createdAt
+        updatedAt
+    }
+}
+}
 `;

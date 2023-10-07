@@ -6,11 +6,13 @@ import {
   playingTrackState,
   playState,
 } from "../atoms/playerAtom";
-import { Track } from "../types/body.types";
+import { LikedTracks, Track } from "../types/body.types";
 import TrackContext from "../hooks/trackContext";
 import Heart from "./track/Heart";
-import { DELETE_TRACK, SAVE_TRACK } from "../graphql/mutation"
-import { useMutation } from '@apollo/client';
+import { DELETE_TRACK, SAVE_TRACK, LIKE_TRACK } from "../graphql/mutation"
+import { GET_LIKED_TRACK } from "../graphql/query";
+import { useMutation, useQuery } from '@apollo/client';
+import { LiveUser } from "../atoms/playerAtom";
 
 interface TrackProps {
   track: Track;
@@ -18,16 +20,33 @@ interface TrackProps {
 }
 
 function Track({ track, playlist }: TrackProps) {
+  const liveUser = useRecoilValue(LiveUser);
   const [hasLiked, setHasLiked] = useState<boolean>(false);
   const [play, setPlay] = useRecoilState<boolean>(playState);
   const playingTrack = useRecoilValue<Track>(playingTrackState);
-  const [likedTracks, setLikedTracks] = useRecoilState<Track[]>(likeTracksState);
+  const [likedTracks, setLikedTracks] = useState<Track[]>([]);
+  const { loading, error, data } = useQuery(GET_LIKED_TRACK);
+
+  useEffect(() => {
+    if (!loading && !error && data) {
+      const userlikedtracks = data.likedTracksFindAll ? data.likedTracksFindAll : [];
+
+      const filteredTracks = userlikedtracks
+        .filter((track) => track.user.username === liveUser.username)
+        .map((track) => track.tracks)
+        ;
+      setLikedTracks(filteredTracks[0]);
+    }
+
+  }, [loading, error, data]);
+
   const { chooseTrack } = useContext(TrackContext);
-  const [Save_Track, { data, loading, error }] = useMutation(SAVE_TRACK);
+  const [Save_Track] = useMutation(SAVE_TRACK);
+  const [Like_Track] = useMutation(LIKE_TRACK);
   const [Delete_Track] = useMutation(DELETE_TRACK);
 
   const index = likedTracks?.findIndex(
-    (tracks: Track) => tracks.key === track.key
+    (tracks: Track) => tracks.id === track.id
   );
   useEffect(() => {
     let liked = index !== -1 ? true : false;
@@ -47,37 +66,71 @@ function Track({ track, playlist }: TrackProps) {
 
   function handleLike() {
     var a = 1;
-    if (index == -1) {
-      setLikedTracks([...likedTracks, track]);
-    } else {
-      const newAraay = likedTracks.filter((el: Track) => el.id !== track.id);
-      setLikedTracks(newAraay);
-      a = -1;
-    }
     Delete_Track({
       variables: {
-          id: track.id
+        id: track.id
+      }
+    });
+    if (index == -1) {
+      setLikedTracks([...likedTracks, track]);
+      Save_Track({
+        variables: {
+          track: {
+            key: track.key,
+            title: track.title,
+            subtitle: track.subtitle,
+            owner: track.owner,
+            music: track.music,
+            image: track.image,
+            likes: track.likes + 1,
+            description: track.description,
+            album: track.album,
+            n_listens: track.n_listens,
+            value: track.value,
+            purchasable: track.purchasable
+          }
         }
       });
-  
-    Save_Track({
-    variables: {
-        track: {
-          key: track.key,
-          title: track.title,
-          subtitle: track.subtitle,
-          owner: track.owner,
-          music: track.music,
-          image: track.image,
-          likes: track.likes + 1,
-          description: track.description,
-          album: track.album,
-          n_listens: track.n_listens,
-          value: track.value,
-          purchasable: track.purchasable
+      Like_Track({
+        variables:{
+          tracks: likedTracks,
+          user: liveUser
         }
+      })
+
+    } 
+    else {
+      Save_Track({
+        variables: {
+          track: {
+            key: track.key,
+            title: track.title,
+            subtitle: track.subtitle,
+            owner: track.owner,
+            music: track.music,
+            image: track.image,
+            likes: track.likes - 1,
+            description: track.description,
+            album: track.album,
+            n_listens: track.n_listens,
+            value: track.value,
+            purchasable: track.purchasable
+          }
+        }
+      });
+      const newAraay = likedTracks.filter((el: Track) => el.id !== track.id);
+      setLikedTracks(newAraay);
+      Like_Track({
+        variables:{
+          tracks: likedTracks,
+          user: liveUser
+        }
+      })
+      a = -1;
     }
-});
+
+
+
   }
 
   return (
@@ -93,7 +146,7 @@ function Track({ track, playlist }: TrackProps) {
 
         <div>
           <h4 className="text-white text-[10px] sm:text-sm font-semibold truncate md:w-56 sm:w-[380px]">
-            {track.title.substring(0,20)}
+            {track.title.substring(0, 20)}
           </h4>
           <p className="text-[rgb(179,179,179)] text-[10px] font-semibold group-hover:text-white">
             {(track?.subtitle || "").replace("-", " ") || ""}

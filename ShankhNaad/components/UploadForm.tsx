@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useMutation } from '@apollo/client';
-import { SAVE_TRACK } from '../graphql/mutation';
+import { MINT_TRACK } from '../graphql/mutation';
 import { Genre } from '../types/body.types';
 import pinFileToIPFS from '../pages/api/pinata/pinFiletoIPFS';
 import { useRecoilValue } from 'recoil';
@@ -11,7 +11,7 @@ const albumOptions = Object.values(Genre);
 const UploadForm: React.FC = () => {
     const liveUser = useRecoilValue(LiveUser);
 
-    const [SaveTrack, { data, loading, error }] = useMutation(SAVE_TRACK, {
+    const [SaveTrack, { data, loading, error }] = useMutation(MINT_TRACK, {
         context: {
             headers: {
                 'username': liveUser.username,
