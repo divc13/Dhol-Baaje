@@ -22,7 +22,6 @@ const MusicDataProvider: React.FC<MusicDataContextProps> = ({ children }) => {
     }
 
     return () => {
-      // Component is unmounting, update ref to reflect this
       componentIsMounted.current = false;
     };
   }, [loading, error, data]);

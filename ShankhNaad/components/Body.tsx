@@ -4,12 +4,25 @@ import { Track as TrackType } from "../types/body.types";
 import Poster from "./Poster";
 import Track from "./Track";
 import Link from "next/link";
-import { MusicDataContext } from "./MusicDataContext";
+// import { MusicDataContext } from "./MusicDataContext";
 import { Genre } from "../types/body.types";
+import { GET_ALL_SONGS } from "../graphql/query";
+import { useQuery } from "@apollo/client";
 
 const Body = () => {
 
-  const musicData = useContext(MusicDataContext);
+  const [musicData, setMusicData] = useState<Track[]>([]);
+
+  const { loading, error, data } = useQuery(GET_ALL_SONGS);
+
+  useEffect(() => {
+    if (!loading && !error && data) {
+      const updatedMusicData = data.trackFindAll ? data.trackFindAll : [];
+      setMusicData(updatedMusicData);
+    }
+
+  }, [loading, error, data]);
+
   const musicDataCopy = [...musicData];
   const top20Songs = musicDataCopy.sort((a, b) => b.likes - a.likes);
   const [search, setSearch] = useState<string>("");

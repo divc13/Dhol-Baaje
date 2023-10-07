@@ -1,8 +1,10 @@
 import React, { lazy, Suspense } from 'react';
 import { Genre } from '../types/body.types';
-import { MusicDataContext } from '../components/MusicDataContext';
-import { useContext } from 'react';
+import { useState, useEffect } from 'react';
 import Head from 'next/head';
+import { useQuery } from '@apollo/client';
+import { Track } from '../types/body.types';
+import { GET_ALL_SONGS } from '../graphql/query';
 
 // Lazy load the Poster component
 const LazyPoster = lazy(() => import('../components/Poster'));
@@ -10,7 +12,18 @@ const LazyPoster = lazy(() => import('../components/Poster'));
 const Explore = () => {
   const playlists = [];
   const genres = Object.values(Genre);
-  const musicData = useContext(MusicDataContext);
+  
+  const [musicData, setMusicData] = useState<Track[]>([]);
+
+  const { loading, error, data } = useQuery(GET_ALL_SONGS);
+
+  useEffect(() => {
+    if (!loading && !error && data) {
+      const updatedMusicData = data.trackFindAll ? data.trackFindAll : [];
+      setMusicData(updatedMusicData);
+    }
+
+  }, [loading, error, data]);
 
   if (musicData) {
     for (const genre of genres) {
