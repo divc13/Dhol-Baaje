@@ -45,3 +45,8 @@ export const UserAddress = atom({
   key: "6",
   default: '',
 });
+
+export const UserName = atom({
+  key: "6",
+  default: '',
+});

@@ -6,11 +6,11 @@ import { useQuery, useMutation } from '@apollo/client';
 import { GET_USER_WITH_USERNAME } from '../graphql/query';
 import { SAVE_WALLET, SAVE_USER } from '../graphql/mutation';
 import { useRecoilState } from "recoil";
-import { UserAddress } from "../atoms/playerAtom";
+import { UserAddress, UserName } from "../atoms/playerAtom";
 
 const signup = () => {
 
-    const [username, setUsername] = useState('');
+    const [username, setUsername] = useRecoilState(UserName);
     const [isUsernameAvailable, setIsUsernameAvailable] = useState('Waiting for Username');
     const { wallet, connected, disconnect } = useWallet();
     const [validity, setValidity] = useState('Waiting for Wallet');
