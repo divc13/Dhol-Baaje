@@ -5,7 +5,6 @@ import Layout from "../components/Layout";
 import { TrackProvider } from "../hooks/trackContext";
 import { ApolloProvider } from '@apollo/client';
 import client from '../apollo/client';
-// import MusicDataProvider from '../components/MusicDataContext';
 import { MeshProvider } from "@meshsdk/react"
 
 
@@ -17,7 +16,6 @@ export default function App({
   return (    
     <MeshProvider>
       <ApolloProvider client={client}>
-        {/* <MusicDataProvider> */}
           <RecoilRoot>
             <TrackProvider>
               <Layout>
@@ -25,7 +23,6 @@ export default function App({
               </Layout>
             </TrackProvider>
           </RecoilRoot>
-        {/* </MusicDataProvider> */}
       </ApolloProvider>
     </MeshProvider>
   );

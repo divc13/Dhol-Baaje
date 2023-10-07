@@ -15,20 +15,6 @@ export const playingTrackState = atom<Track>({
 
 export const currentPlaylistState = atom<Track[]>({
   key: "3",
-  // default: selector({
-  //   key: 'Top20SongsDefault',
-  //   get: async ({ get }) => {
-  //     const musicData = useContext(MusicDataContext);
-
-  //     if (!musicData) {
-  //       console.error('Music data not available.');
-  //       return [];
-  //     }
-  //     const sortedTracks = musicData.sort((a, b) => b.likes - a.likes);
-  //     const top20Songs = sortedTracks.slice(0, 20);
-  //     return top20Songs;
-  //   },
-  // }),
   default: undefined,
 });
 

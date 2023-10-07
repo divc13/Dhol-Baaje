@@ -1,18 +1,17 @@
-import React, { lazy, Suspense } from 'react';
-import { Genre } from '../types/body.types';
-import { useState, useEffect } from 'react';
-import Head from 'next/head';
-import { useQuery } from '@apollo/client';
-import { Track } from '../types/body.types';
-import { GET_ALL_SONGS } from '../graphql/query';
+import Poster from "../components/Poster";
+import { Genre } from "../types/body.types";
+import { useEffect, useState } from "react";
+import Head from "next/head";
+import Track from "../components/Track";
+import { useQuery } from "@apollo/client";
+import { GET_ALL_SONGS } from "../graphql/query";
 
-// Lazy load the Poster component
-const LazyPoster = lazy(() => import('../components/Poster'));
 
 const Explore = () => {
+
   const playlists = [];
   const genres = Object.values(Genre);
-  
+
   const [musicData, setMusicData] = useState<Track[]>([]);
 
   const { loading, error, data } = useQuery(GET_ALL_SONGS);
@@ -27,7 +26,7 @@ const Explore = () => {
 
   if (musicData) {
     for (const genre of genres) {
-      const genrePlaylist = musicData.filter((track) => {
+      const genrePlaylist = musicData.filter(track => {
         return track.album && track.album.includes(genre);
       });
       if (genrePlaylist.length > 0) {
@@ -59,10 +58,12 @@ const Explore = () => {
 
               <div className="m- overflow-y-scroll scrollbarThin">
                 <div className="flex gap-4 p-1 h-[150px] sm:h-[220px] min-w-max">
-                  {playlist.playlist.map((track, i) => (
-                    <Suspense key={i} fallback={<div>Loading...</div>}>
-                      <LazyPoster track={track} key={i} playlist={playlist.playlist} />
-                    </Suspense>
+                  {playlist.playlist.map((track: Track, i: number) => (
+                    <Poster
+                      track={track}
+                      key={i}
+                      playlist={playlist.playlist}
+                    />
                   ))}
                 </div>
               </div>
