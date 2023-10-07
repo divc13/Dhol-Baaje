@@ -3,16 +3,16 @@ import Image from 'next/image';
 import { CardanoWallet, useWallet } from '@meshsdk/react';
 import { checkSignature, generateNonce } from '@meshsdk/core';
 import { useQuery, useLazyQuery } from '@apollo/client';
-import { GET_ALL_WALLETS } from '../graphql/query';
+import { GET_ALL_USERS } from '../graphql/query';
 import { useSetRecoilState } from "recoil";
-import { UserAddress } from "../atoms/playerAtom";
+import { LiveUser } from "../atoms/playerAtom";
 
 const Login = () => {
   const { wallet, connected, disconnect } = useWallet();
   // const [address, setAddress] = useState('');
   const [validity, setValidity] = useState('Waiting for Wallet');
-  const { data } = useQuery(GET_ALL_WALLETS);
-  const setAddress = useSetRecoilState(UserAddress);
+  const { data } = useQuery(GET_ALL_USERS);
+  const setActiveUser = useSetRecoilState(LiveUser);
 
   async function backendGetNonce(userAddress) {
     const nonce = generateNonce('Sign to login in to Dhol Baaje: ');
@@ -24,13 +24,19 @@ const Login = () => {
     if (result) {
         console.log("success");
         const addr = await wallet.getChangeAddress();
-        if (!data || !data.walletFindAll.some(wallet => wallet.address === addr)){
+        const liveUser = data.userFindAll.filter((user) =>{ return user && user.wallet.address === addr});
+        if (!data || !liveUser){
           setValidity('Wallet not Registered');
           disconnect();
         }
         else
         {
-          setAddress(addr);
+          setActiveUser({
+            username: liveUser[0].username,
+            wallet: {
+              address: liveUser[0].addr,
+            },
+        });
           setValidity('User Logged In');
         }
       }

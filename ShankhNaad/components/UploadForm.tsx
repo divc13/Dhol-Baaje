@@ -3,15 +3,18 @@ import { useMutation } from '@apollo/client';
 import { SAVE_TRACK } from '../graphql/mutation';
 import { Genre } from '../types/body.types';
 import pinFileToIPFS from '../pages/api/pinata/pinFiletoIPFS';
+import { useRecoilValue } from 'recoil';
+import { LiveUser } from '../atoms/playerAtom';
 
 const albumOptions = Object.values(Genre);
 
 const UploadForm: React.FC = () => {
+    const liveUser = useRecoilValue(LiveUser);
 
     const [SaveTrack, { data, loading, error }] = useMutation(SAVE_TRACK, {
         context: {
             headers: {
-                'username': null
+                'username': liveUser.username,
             }
         }
     });

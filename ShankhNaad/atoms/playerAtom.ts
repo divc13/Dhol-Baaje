@@ -1,6 +1,6 @@
 import { atom, selector } from "recoil";
 import { useContext } from 'react';
-import { Track } from "../types/body.types";
+import { Track, User } from "../types/body.types";
 import { MusicDataContext } from "../components/MusicDataContext";
 
 export const playState = atom({
@@ -41,12 +41,7 @@ export const likeTracksState = atom<Track[]>({
   default: [],
 });
 
-export const UserAddress = atom({
+export const LiveUser = atom<User>({
   key: "6",
-  default: '',
-});
-
-export const UserName = atom({
-  key: "6",
-  default: '',
+  default: undefined,
 });

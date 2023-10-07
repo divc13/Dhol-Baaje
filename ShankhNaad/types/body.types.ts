@@ -46,8 +46,13 @@ export interface Album {
     tracks: Track[];
 }
 
+export interface Wallet {
+  address: string;
+}
+
 export interface User {
   username: string;
+  wallet: Wallet;
 }
 
 export interface LikedTracks {

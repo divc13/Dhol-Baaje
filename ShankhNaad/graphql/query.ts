@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 
-export const GET_USER_WITH_USERNAME = gql`
+export const GET_ALL_USERS = gql`
     query FindUSER{
     userFindAll {
         id
