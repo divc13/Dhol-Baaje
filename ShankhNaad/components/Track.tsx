@@ -50,7 +50,7 @@ function Track({ track, playlist }: TrackProps) {
     if (index == -1) {
       setLikedTracks([...likedTracks, track]);
     } else {
-      const newAraay = likedTracks.filter((el: Track) => el.key !== track.key);
+      const newAraay = likedTracks.filter((el: Track) => el.id !== track.id);
       setLikedTracks(newAraay);
       a = -1;
     }
@@ -70,7 +70,6 @@ function Track({ track, playlist }: TrackProps) {
           music: track.music,
           image: track.image,
           likes: track.likes + 1,
-          dislikes: track.dislikes,
           description: track.description,
           album: track.album,
           n_listens: track.n_listens,

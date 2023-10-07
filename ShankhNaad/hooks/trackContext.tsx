@@ -40,7 +40,7 @@ export const TrackProvider = ({ children }: { children: ReactNode }) => {
 
   const chooseTrack: chooseTrack = (track, playlist) => {
     setCurrentPlaylist(playlist);
-    const cachedData = recentPlayedCache(track?.key, track);
+    const cachedData = recentPlayedCache(track?.id, track);
     setRecentlyPlayed([...cachedData]);
     setPlayingTrack(track);
     Delete_Track({
