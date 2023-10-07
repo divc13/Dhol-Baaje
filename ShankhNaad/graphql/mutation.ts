@@ -11,8 +11,7 @@ mutation trackCreate($track: TrackInput!) {
         owner {
                 id
             subjectId
-            email
-            image
+            username
             wallet {
                     id
                 subjectId
@@ -43,7 +42,6 @@ mutation trackCreate($track: TrackInput!) {
         music
         image
         likes
-        dislikes
         n_listens
         description
         album
@@ -82,6 +80,43 @@ mutation walletCreate($wallet: WalletInput!) {
             metadata
             assetSubjectId
             logosphereId
+            createdAt
+            updatedAt
+        }
+        createdAt
+        updatedAt
+    }
+}
+`;
+
+
+export const SAVE_USER = gql`
+mutation userCreate($user: UserInput!) {
+    userSave(user: $user) {
+        id
+        subjectId
+        username
+        wallet {
+            id
+            subjectId
+            name
+            walletId
+            address
+            publicKey
+            balance
+            assets {
+                id
+                subjectId
+                name
+                fingerprint
+                policyId
+                quantity
+                metadata
+                assetSubjectId
+                logosphereId
+                createdAt
+                updatedAt
+            }
             createdAt
             updatedAt
         }

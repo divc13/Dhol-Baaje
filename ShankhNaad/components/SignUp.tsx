@@ -3,9 +3,9 @@ import Image from 'next/image';
 import { CardanoWallet, useWallet } from '@meshsdk/react';
 import { checkSignature, generateNonce } from '@meshsdk/core';
 import { useQuery, useMutation } from '@apollo/client';
-import { GET_ALL_WALLETS, GET_USER_WITH_USERNAME } from '../graphql/query';
-import { SAVE_WALLET } from '../graphql/mutation';
-import { useSetRecoilState } from "recoil";
+import { GET_USER_WITH_USERNAME } from '../graphql/query';
+import { SAVE_WALLET, SAVE_USER } from '../graphql/mutation';
+import { useRecoilState } from "recoil";
 import { UserAddress } from "../atoms/playerAtom";
 
 const signup = () => {
@@ -14,7 +14,7 @@ const signup = () => {
     const [isUsernameAvailable, setIsUsernameAvailable] = useState('Waiting for Username');
     const { wallet, connected, disconnect } = useWallet();
     const [validity, setValidity] = useState('Waiting for Wallet');
-    const setAddress = useSetRecoilState(UserAddress);
+    const [Address, setAddress] = useRecoilState(UserAddress);
     
     const handleUsernameChange = (event) => {
         const newUsername = event.target.value;
@@ -22,7 +22,7 @@ const signup = () => {
     };
 
     const { loading, error, data } = useQuery(GET_USER_WITH_USERNAME);
-    const [Save_Wallet] = useMutation(SAVE_WALLET);
+    const [Save_User] = useMutation(SAVE_USER);
     async function backendGetNonce(userAddress) {
       const nonce = generateNonce('Sign up to Dhol Baaje: ');
       return nonce;
@@ -39,14 +39,17 @@ const signup = () => {
           }
           else
           {
-            // Save_Wallet(
-            //   variables: {
-            //     user: {
-            //         title: formData.title,
-            //     }
-            // }
-            // )
             setAddress(addr);
+            Save_User({
+              variables: {
+                user: {
+                    username: username,
+                    wallet: {
+                      address: addr,
+                    }
+                }
+            }
+          })
             setValidity('User Logged In');
           }
         }
@@ -64,32 +67,14 @@ const signup = () => {
     }
     
     async function frontendSignMessage(nonce) {
-        // try {
           const userAddress = (await wallet.getRewardAddresses())[0];
           const signature = await wallet.signData(userAddress, nonce);
           await backendVerifySignature(nonce, userAddress, signature);
-        // } catch (error) {
-        //     console.log("failure");
-        // }
       }
   
        
 
     const handleCheckUsernameAvailability = async () => {
-
-        // if (loading) {
-        //     console.log('Loading...');
-        //     return;
-        // }
-
-        // if (error) {
-        //     // Handle error state if needed
-        //     console.error('Error:', error);
-        //     return;
-        // }
-
-        // // Check if the username is available
-
         console.log(data);
         if (!data || data.userFindAll.length === 0 || !data.userFindAll.some(user => user.username === username)){
             setIsUsernameAvailable('Getting Wallet');
@@ -131,7 +116,10 @@ const signup = () => {
               {isUsernameAvailable === 'Getting Wallet' 
               && ((
                 validity === 'Waiting for Wallet' &&
-                <CardanoWallet label="Sign In with Cardano" onConnected={() => frontendStartLoginProcess()} />
+                <>
+                  <div className="flex flex:row py-2">Username <p className="text-green-500 px-2">{username}</p> is available!!</div>
+                  <CardanoWallet label="Sign In with Cardano" onConnected={() => frontendStartLoginProcess()} />
+                </>
               )
               || (
                 validity === 'User Logged In' &&
@@ -163,16 +151,14 @@ const signup = () => {
                   >
                     Check Username Availability
                   </button>
-                  <p className="text-red-500">Username `{username}` not available. Please choose a different username.</p>
+                  <p className="text-red-500 flex flex:row py-2">Username <p className="text-green-500 px-2">{username}</p> not available. Please choose a different username.</p>
               </div>
               </>
               )}
             </div>
           </form>
         </section>
-      );
-      
-        
+      );    
 };
 
 export default signup;
