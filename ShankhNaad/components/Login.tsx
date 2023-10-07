@@ -7,6 +7,7 @@ import { GET_ALL_USERS } from '../graphql/query';
 import { useRecoilState } from "recoil";
 import { LiveUser } from "../atoms/playerAtom";
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 const Login = () => {
   const router = useRouter();
@@ -93,8 +94,10 @@ const Login = () => {
             height={1000}
             draggable="false"
           />
-          {validity === 'Waiting for Wallet' &&
-            <CardanoWallet label="Sign In with Cardano" onConnected={() => frontendStartLoginProcess()} />}
+          {validity === 'Waiting for Wallet' && (<>
+            <Link href="/signup"><button className="transparent hover:bg-green-700 border boder:white py-3 px-7 text-xl mb-5 rounded">New User? Sign Up!!</button></Link>
+            <CardanoWallet label="Sign In with Cardano" onConnected={() => frontendStartLoginProcess()} />
+          </>)}
           {validity === 'User Logged In' &&
           <>
             <CardanoWallet label="Sign In with Cardano" />
@@ -102,8 +105,9 @@ const Login = () => {
           </>}
           {validity === 'Wallet not Registered' &&
           <>
-            <CardanoWallet label="Sign In with Cardano" onConnected={() => frontendStartLoginProcess()} />
+            <Link href="/signup"><button className="transparent hover:bg-green-700 border boder:white py-3 px-7 text-xl mb-5 rounded">New User? Sign Up!!</button></Link>
             <div>This wallet is not registered.</div>
+            <CardanoWallet label="Sign In with Cardano" onConnected={() => frontendStartLoginProcess()} />
           </>}
         </div>
       </form>
