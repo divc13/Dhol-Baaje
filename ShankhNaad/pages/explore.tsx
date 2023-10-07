@@ -1,19 +1,20 @@
-import Poster from "../components/Poster";
-import { Genre } from "../types/body.types";
-import { MusicDataContext } from "../components/MusicDataContext";
-import { useContext } from "react";
-import Head from "next/head";
-import Track from "../components/Track";
+import React, { lazy, Suspense } from 'react';
+import { Genre } from '../types/body.types';
+import { MusicDataContext } from '../components/MusicDataContext';
+import { useContext } from 'react';
+import Head from 'next/head';
 
+// Lazy load the Poster component
+const LazyPoster = lazy(() => import('../components/Poster'));
 
 const Explore = () => {
-
   const playlists = [];
   const genres = Object.values(Genre);
   const musicData = useContext(MusicDataContext);
+
   if (musicData) {
     for (const genre of genres) {
-      const genrePlaylist = musicData.filter(track => {
+      const genrePlaylist = musicData.filter((track) => {
         return track.album && track.album.includes(genre);
       });
       if (genrePlaylist.length > 0) {
@@ -45,12 +46,10 @@ const Explore = () => {
 
               <div className="m- overflow-y-scroll scrollbarThin">
                 <div className="flex gap-4 p-1 h-[150px] sm:h-[220px] min-w-max">
-                  {playlist.playlist.map((track: Track, i: number) => (
-                    <Poster
-                      track={track}
-                      key={i}
-                      playlist={playlist.playlist}
-                    />
+                  {playlist.playlist.map((track, i) => (
+                    <Suspense key={i} fallback={<div>Loading...</div>}>
+                      <LazyPoster track={track} key={i} playlist={playlist.playlist} />
+                    </Suspense>
                   ))}
                 </div>
               </div>

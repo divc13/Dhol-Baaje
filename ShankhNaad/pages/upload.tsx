@@ -1,19 +1,22 @@
-import Head from "next/head";
-import UploadForm from "../components/UploadForm";
+import React, { lazy, Suspense } from 'react';
+import Head from 'next/head';
 import PrivateRoute from '../PrivateRoute';
 
-const TrackForm = () => {
+// Lazy load the UploadForm component
+const LazyUploadForm = lazy(() => import('../components/UploadForm'));
 
-    return (
-        <>
-            <Head>
-                <title>Dhol Baaje - Upload </title>
-                <link rel="icon" href="/favicon.ico" />
-            </Head>
-            <UploadForm />
-        </>
-    );
+const TrackForm = () => {
+  return (
+    <>
+      <Head>
+        <title>Dhol Baaje - Upload</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <Suspense fallback={<div>Loading...</div>}>
+        <LazyUploadForm />
+      </Suspense>
+    </>
+  );
 };
 
-// export default PrivateRoute(TrackForm);
-export default TrackForm;
+export default PrivateRoute(TrackForm);
