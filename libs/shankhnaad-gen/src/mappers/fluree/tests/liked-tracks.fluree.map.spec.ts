@@ -52,6 +52,7 @@ describe('LikedTracks Fluree Map', () => {
             },
           ],
         },
+        'user/subscriptionEndDate': 'abcdefg',
       },
       'liked_tracks/track': [
         {
@@ -85,6 +86,7 @@ describe('LikedTracks Fluree Map', () => {
               'wallet/balance': 1,
               'wallet/assets': null,
             },
+            'user/subscriptionEndDate': 'abcdefg',
           },
           'track/music': '123456789',
           'track/image': '123456789',

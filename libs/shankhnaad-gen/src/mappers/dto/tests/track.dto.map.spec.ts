@@ -52,6 +52,7 @@ describe('Track Dto Map', () => {
             },
           ],
         },
+        subscriptionEndDate: 'abcdefg',
       },
       music: '123456789',
       image: '123456789',

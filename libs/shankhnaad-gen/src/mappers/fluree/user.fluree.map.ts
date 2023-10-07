@@ -20,6 +20,10 @@ export class UserFlureeMap extends Mapper<User> {
         WalletFlureeMap,
         data['user/wallet'] || data.wallet
       ),
+      subscriptionEndDate: this.scalar<string>(
+        String,
+        data['user/subscriptionEndDate'] || data.subscriptionEndDate
+      ),
     });
     if (userOrError.isSuccess) {
       return userOrError.getValue();
@@ -38,6 +42,10 @@ export class UserFlureeMap extends Mapper<User> {
       'user/wallet': this.entityToData<Wallet, WalletFlureeMap>(
         WalletFlureeMap,
         user.wallet
+      ),
+      'user/subscriptionEndDate': this.scalar<string>(
+        String,
+        user.subscriptionEndDate
       ),
     };
   }

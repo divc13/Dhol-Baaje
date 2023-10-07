@@ -2,7 +2,7 @@ import { gql } from '@apollo/client';
 
 export const SAVE_TRACK = gql`
 mutation trackCreate($track: TrackInput!) {
-        trackSave(track: $track) {
+        trackMintNft(track: $track) {
         id
         subjectId
         key

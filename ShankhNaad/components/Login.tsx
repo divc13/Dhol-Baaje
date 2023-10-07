@@ -4,15 +4,20 @@ import { CardanoWallet, useWallet } from '@meshsdk/react';
 import { checkSignature, generateNonce } from '@meshsdk/core';
 import { useQuery, useLazyQuery } from '@apollo/client';
 import { GET_ALL_USERS } from '../graphql/query';
-import { useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { LiveUser } from "../atoms/playerAtom";
+import { useRouter } from 'next/router';
 
 const Login = () => {
+  const router = useRouter();
   const { wallet, connected, disconnect } = useWallet();
-  // const [address, setAddress] = useState('');
   const [validity, setValidity] = useState('Waiting for Wallet');
   const { data } = useQuery(GET_ALL_USERS);
-  const setActiveUser = useSetRecoilState(LiveUser);
+  const [activeUser, setActiveUser] = useRecoilState(LiveUser);
+
+  if (activeUser) {
+    router.push('/');
+  }
 
   async function backendGetNonce(userAddress) {
     const nonce = generateNonce('Sign to login in to Dhol Baaje: ');
@@ -34,10 +39,21 @@ const Login = () => {
           setActiveUser({
             username: liveUser[0].username,
             wallet: {
-              address: liveUser[0].addr,
+              address: liveUser[0].wallet.address,
             },
+            subscriptionEndDate: liveUser[0].subscriptionEndDate,
         });
           setValidity('User Logged In');
+          console.log(await wallet.getRewardAddresses());
+          const referer = router.query.referer as string | undefined;
+          console.log(router.query);
+          if (referer) {
+            router.push(referer);
+          } else {
+            // Default redirect if no referer is found
+            router.push('/');
+          }
+  
         }
       }
       else {

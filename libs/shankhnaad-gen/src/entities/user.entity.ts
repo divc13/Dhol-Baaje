@@ -5,6 +5,7 @@ import { Wallet } from './wallet.entity';
 interface UserProps extends EntityProps {
   username?: string;
   wallet?: Wallet;
+  subscriptionEndDate?: string;
 }
 
 export class User extends Entity<UserProps> {
@@ -13,6 +14,9 @@ export class User extends Entity<UserProps> {
   }
   get wallet(): Wallet {
     return this.props.wallet;
+  }
+  get subscriptionEndDate(): string {
+    return this.props.subscriptionEndDate;
   }
 
   private constructor(props: UserProps) {

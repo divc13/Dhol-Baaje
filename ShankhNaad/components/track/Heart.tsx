@@ -1,6 +1,6 @@
 import { AiFillHeart } from "react-icons/ai";
 import { useRouter } from 'next/router';
-import { useWallet } from "@martifylabs/mesh-react";
+import { useWallet } from "@meshsdk/react";
 
 interface HeartProps {
   hasLiked: boolean;

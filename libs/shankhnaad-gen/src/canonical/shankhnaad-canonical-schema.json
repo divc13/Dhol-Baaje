@@ -233,6 +233,19 @@
           "isWriteOnly": false,
           "description": "User wallet",
           "defType": "Entity"
+        },
+        {
+          "name": "subscriptionEndDate",
+          "type": "string",
+          "isEnabled": true,
+          "isRequired": false,
+          "isIndexed": false,
+          "isUnique": false,
+          "isPK": false,
+          "isReadOnly": false,
+          "isWriteOnly": false,
+          "description": "Subscription End Date",
+          "defType": "Scalar"
         }
       ]
     },

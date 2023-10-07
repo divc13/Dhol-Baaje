@@ -41,6 +41,7 @@ describe('Reorderprops Dto Map', () => {
               balance: 1,
               assets: null,
             },
+            subscriptionEndDate: 'abcdefg',
           },
           music: '123456789',
           image: '123456789',

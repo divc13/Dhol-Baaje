@@ -56,6 +56,7 @@ describe('Track Fluree Map', () => {
             },
           ],
         },
+        'user/subscriptionEndDate': 'abcdefg',
       },
       'track/music': '123456789',
       'track/image': '123456789',

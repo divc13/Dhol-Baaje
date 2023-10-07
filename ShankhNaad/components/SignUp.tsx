@@ -7,8 +7,14 @@ import { GET_ALL_USERS } from '../graphql/query';
 import { SAVE_USER } from '../graphql/mutation';
 import { useRecoilState } from 'recoil';
 import { LiveUser } from '../atoms/playerAtom';
+import { useRouter } from 'next/router';
 
 const signup = () => {
+
+  const currentDate = new Date();
+  const sevenDaysLater = new Date();
+  sevenDaysLater.setDate(currentDate.getDate() + 7);
+  
   const [username, setUsername] = useState('');
   const [activeUser, setActiveUser] = useRecoilState(LiveUser);
   const [isUsernameAvailable, setIsUsernameAvailable] = useState(
@@ -16,6 +22,11 @@ const signup = () => {
   );
   const { wallet, connected, disconnect } = useWallet();
   const [validity, setValidity] = useState('Waiting for Wallet');
+
+  const router = useRouter();
+  if (activeUser) {
+    router.push('/');
+  }
 
   const handleUsernameChange = (event) => {
     const newUsername = event.target.value;
@@ -47,6 +58,7 @@ const signup = () => {
             wallet: {
               address: addr,
             },
+            subscriptionEndDate: sevenDaysLater.toISOString(),
         });
         Save_User({
           variables: {

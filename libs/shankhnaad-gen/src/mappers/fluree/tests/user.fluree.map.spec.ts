@@ -46,6 +46,7 @@ describe('User Fluree Map', () => {
           },
         ],
       },
+      'user/subscriptionEndDate': 'abcdefg',
     };
     mapper = new UserFlureeMap();
   });
@@ -59,6 +60,7 @@ describe('User Fluree Map', () => {
     expect(user.createdAt instanceof Date).toBeTruthy();
     expect(user.updatedAt instanceof Date).toBeTruthy();
     expect(user.username).toBe('babingo_whoelse@gmail.com');
+    expect(user.subscriptionEndDate).toBe('abcdefg');
   });
 
   it('should serialize User to Fluree data', () => {

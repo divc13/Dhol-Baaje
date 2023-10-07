@@ -7,4 +7,5 @@ export class UserDto {
   updatedAt?: string;
   username?: string;
   wallet?: WalletDto;
+  subscriptionEndDate?: string;
 }

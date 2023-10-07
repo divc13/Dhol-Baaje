@@ -18,6 +18,10 @@ export class UserDtoMap extends Mapper<User> {
         WalletDtoMap,
         data['wallet']
       ),
+      subscriptionEndDate: this.scalar<string>(
+        String,
+        data['subscriptionEndDate']
+      ),
     });
     if (userOrError.isSuccess) {
       return userOrError.getValue();
@@ -36,6 +40,10 @@ export class UserDtoMap extends Mapper<User> {
       wallet: this.entityToData<Wallet, WalletDtoMap>(
         WalletDtoMap,
         user.wallet
+      ),
+      subscriptionEndDate: this.scalar<string>(
+        String,
+        user.subscriptionEndDate
       ),
     };
   }

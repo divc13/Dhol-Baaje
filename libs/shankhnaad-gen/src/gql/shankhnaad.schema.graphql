@@ -57,6 +57,7 @@ type User {
   subjectId: String
   username: String
   wallet: Wallet
+  subscriptionEndDate: String
   createdAt: String
   updatedAt: String
 }
@@ -66,6 +67,7 @@ input UserInput {
   subjectId: String
   username: String
   wallet: WalletInput
+  subscriptionEndDate: String
   createdAt: String
   updatedAt: String
 }

@@ -103,6 +103,11 @@ class User {
     type: () => Wallet,
   })
   wallet: Wallet;
+
+  @Prop({
+    doc: 'Subscription End Date',
+  })
+  subscriptionEndDate: string;
 }
 
 export enum Genre {

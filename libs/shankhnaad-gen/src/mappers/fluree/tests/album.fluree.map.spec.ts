@@ -46,6 +46,7 @@ describe('Album Fluree Map', () => {
               'wallet/balance': 1,
               'wallet/assets': null,
             },
+            'user/subscriptionEndDate': 'abcdefg',
           },
           'track/music': '123456789',
           'track/image': '123456789',

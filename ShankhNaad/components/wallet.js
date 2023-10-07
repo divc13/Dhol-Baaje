@@ -4,15 +4,19 @@ async function getNetworkInformation() {
     let walletServer = WalletServer.init('http://localhost:7070/v2');
     let recoveryPhrase = Seed.generateRecoveryPhrase();
     console.log(recoveryPhrase);
-    let mnemonic_sentence = Seed.toMnemonicList(recoveryPhrase);
+    // let mnemonic_sentence = Seed.toMnemonicList(recoveryPhrase);
+    let mnemonic_sentence = ["sword","juice","auction","veteran","inmate","attract","truck","squirrel","echo","abuse","circle","ill","arrow","give","monitor"];
     console.log(mnemonic_sentence);
 
-    let passphrase = '123456@Div';
+    
+
+    // let passphrase = '123456@Div';
     let name = 'DholBaaje-wallet';
-    let wallets = await walletServer.wallets();
-    let wallet = wallets[1];
-    console.log(await wallet.getUsedAddresses());
-    console.log(wallet.id);
+    // let wallets = await walletServer.wallets();
+    // let wallet = wallets[1];
+    // console.log(await wallet.getUsedAddresses());
+    // console.log(wallet.id);
+    let wallet = await walletServer.createOrRestoreShelleyWallet(name, mnemonic_sentence);
 
     // let wallet = await walletServer.createOrRestoreShelleyWallet(name, mnemonic_sentence, passphrase);
     // console.log(wallet);

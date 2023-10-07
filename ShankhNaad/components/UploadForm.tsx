@@ -140,7 +140,7 @@ const UploadForm: React.FC = () => {
                     album: formData.album,
                     likes: 0,
                     n_listens: 0,
-                    nftIpfsCid: formData.nftIpfsCid,
+                    nftIpfsCid: "QmPugZiCbG56oHREWrdDBrHqjMv9pA91PdLuD5fef8qwbL",
                     nftAssetName: "Dhol Baaje",
                     nftName: "Dhol Baaje - " + formData.title,
                     nftDescription: "Dhol Baaje Song - " + formData.description,

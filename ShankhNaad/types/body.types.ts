@@ -53,6 +53,7 @@ export interface Wallet {
 export interface User {
   username: string;
   wallet: Wallet;
+  subscriptionEndDate: string;
 }
 
 export interface LikedTracks {

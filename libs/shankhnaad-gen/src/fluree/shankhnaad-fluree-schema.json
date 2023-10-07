@@ -204,6 +204,14 @@
           "unique": false,
           "type": "ref",
           "restrictCollection": "wallet"
+        },
+        {
+          "_id": "_predicate",
+          "name": "subscriptionEndDate",
+          "doc": "Subscription End Date",
+          "index": false,
+          "unique": false,
+          "type": "string"
         }
       ]
     },

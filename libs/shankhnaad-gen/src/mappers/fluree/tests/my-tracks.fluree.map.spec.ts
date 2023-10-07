@@ -52,6 +52,7 @@ describe('MyTracks Fluree Map', () => {
             },
           ],
         },
+        'user/subscriptionEndDate': 'abcdefg',
       },
       'my_tracks/track': [
         {
@@ -85,6 +86,7 @@ describe('MyTracks Fluree Map', () => {
               'wallet/balance': 1,
               'wallet/assets': null,
             },
+            'user/subscriptionEndDate': 'abcdefg',
           },
           'track/music': '123456789',
           'track/image': '123456789',
