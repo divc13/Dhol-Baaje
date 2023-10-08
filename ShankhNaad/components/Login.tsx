@@ -15,8 +15,11 @@ const Login = () => {
   const [validity, setValidity] = useState('Waiting for Wallet');
   const { data } = useQuery(GET_ALL_USERS);
   const [activeUser, setActiveUser] = useRecoilState(LiveUser);
+  const referer = router.query.referer as string | undefined;
+  const currentDate = new Date();
+  console.log(router.query);
 
-  if (activeUser) {
+  if (activeUser && !referer) {
     router.push('/');
   }
 
@@ -46,14 +49,17 @@ const Login = () => {
         });
           setValidity('User Logged In');
           console.log(await wallet.getRewardAddresses());
-          const referer = router.query.referer as string | undefined;
-          console.log(router.query);
-          if (referer) {
+          
+          if (referer && (new Date(liveUser.subscriptionEndDate) > currentDate)) {
             router.push(referer);
-          } else {
-            // Default redirect if no referer is found
-            router.push('/');
           }
+          else if(referer){
+            router.push({
+              pathname: '/subscription',
+              query: { referer },
+            });
+          }
+          
   
         }
       }

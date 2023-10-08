@@ -3,6 +3,8 @@ import Link from "next/link";
 import { MusicNoteIcon } from "@heroicons/react/solid";
 import { useWallet } from "@meshsdk/react";
 import { LogoutIcon } from "@heroicons/react/outline";
+import { LiveUser } from "../atoms/playerAtom";
+import { useRecoilState } from "recoil";
 
 type SearchProps = {
   search: string;
@@ -10,12 +12,19 @@ type SearchProps = {
   searchQuery: (e: any) => void
 };
 
-const handleSubmit = (e :any) => {
-  e.preventDefault();
-}
 
 function Search({ search, setSearch, searchQuery}: SearchProps) {
   const { connected, disconnect } = useWallet();
+  const handleSubmit = (e :any) => {
+    e.preventDefault();
+  }
+
+  const [activeUser, setActiveUser] = useRecoilState(LiveUser);
+
+  const handleLogOut = () => {
+    setActiveUser(undefined);
+    disconnect();
+  }
 
   return (
     <div className="flex gap-2 mr-2">
@@ -42,7 +51,7 @@ function Search({ search, setSearch, searchQuery}: SearchProps) {
             </button>
           </Link>
 
-          <button className="bg-white/10 flex items-center border-2 border-[#262626] rounded-full h-12 py-3 px-2 text-sm" onClick={ disconnect }>
+          <button className="bg-white/10 flex items-center border-2 border-[#262626] rounded-full h-12 py-3 px-2 text-sm" onClick={ handleLogOut }>
             <LogoutIcon className="w-4 h-4 mr-1.5" aria-hidden="true" />
             Logout
           </button>

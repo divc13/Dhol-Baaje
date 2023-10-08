@@ -9,9 +9,9 @@ const Subscription = () => {
   const currentDate = new Date();
   const router = useRouter();
 
-  if (liveUser.subscriptionEndDate && (new Date(liveUser.subscriptionEndDate) > currentDate)) {
-    router.push('/');
-  }
+  // if (!liveUser || (liveUser.subscriptionEndDate && (new Date(liveUser.subscriptionEndDate) > currentDate))) {
+  //   router.push('/');
+  // }
 
   const handleSubscription = () => {
 
@@ -29,7 +29,7 @@ const Subscription = () => {
             height={1000}
             draggable="false"
           />
-          <button onClick={handleSubscription} className="bg-yellow-500 p-2">
+          <button onClick={handleSubscription} className="border border-white transparent rounded hover:bg-red-500 mt-4 p-2 py-3 hover:text-red">
             Subscribe Now : Only 25 Ada a month!!
           </button>
         </div>

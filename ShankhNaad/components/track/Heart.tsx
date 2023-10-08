@@ -1,6 +1,7 @@
 import { AiFillHeart } from "react-icons/ai";
 import { useRouter } from 'next/router';
 import { useWallet } from "@meshsdk/react";
+import PrivateRoute from "../../PrivateRoute";
 
 interface HeartProps {
   hasLiked: boolean;
