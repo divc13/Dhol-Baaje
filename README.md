@@ -1,7 +1,5 @@
 # Dhol Baaje - Rhythmic NFTs
-
-![image](https://github.com/divc13/Dhol-Baaje/assets/110289042/686876f9-9a93-4202-8df7-c9f211516916)
-
+![ezgif com-optimize](https://github.com/divc13/Dhol-Baaje/assets/110289042/328116bf-bad4-4e8a-9ab9-7a1bef90d1b6)
 
 ## Overview
 
