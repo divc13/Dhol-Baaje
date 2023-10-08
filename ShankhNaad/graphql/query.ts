@@ -32,6 +32,7 @@ export const GET_ALL_USERS = gql`
         }
         createdAt
         updatedAt
+        subscriptionEndDate
     }
     }
 `;

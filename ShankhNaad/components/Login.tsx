@@ -15,12 +15,14 @@ const Login = () => {
   const [validity, setValidity] = useState('Waiting for Wallet');
   const { data } = useQuery(GET_ALL_USERS);
   const [activeUser, setActiveUser] = useRecoilState(LiveUser);
-  const referer = router.query.referer as string | undefined;
+  const referer = router.query.referer as string | "/";
   const currentDate = new Date();
   console.log(router.query);
 
   if (activeUser && !referer) {
-    router.push('/');
+    router.push({
+      pathname: '/',
+    });
   }
 
   async function backendGetNonce(userAddress) {
@@ -34,6 +36,8 @@ const Login = () => {
         console.log("success");
         const addr = await wallet.getChangeAddress();
         const liveUser = data.userFindAll.filter((user) =>{ return user && user.wallet.address === addr});
+        console.log(liveUser);
+        
         if (!data || liveUser.length == 0){
           setValidity('Wallet not Registered');
           disconnect();

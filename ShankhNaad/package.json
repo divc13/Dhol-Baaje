@@ -38,7 +38,9 @@
     "recoil": "^0.7.6",
     "services": "^0.0.3",
     "tailwind-scrollbar-hide": "^1.1.7",
+    "three": "^0.157.0",
     "to-hex": "^0.0.17",
+    "vanta": "^0.5.24",
     "web3-cardano-token": "^0.0.11"
   },
   "devDependencies": {
