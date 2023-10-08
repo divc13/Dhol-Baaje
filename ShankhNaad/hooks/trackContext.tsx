@@ -43,31 +43,12 @@ export const TrackProvider = ({ children }: { children: ReactNode }) => {
     const cachedData = recentPlayedCache(track?.id, track);
     setRecentlyPlayed([...cachedData]);
     setPlayingTrack(track);
-    Delete_Track({
-      variables: {
-          id: track.id
-        }
-      });
-    
       Save_Track({
       variables: {
           track: {
-            key: track.key,
-            title: track.title,
-            subtitle: track.subtitle,
-            owner: track.owner,
-            music: track.music,
-            image: track.image,
-            likes: track.likes,
-            description: track.description,
-            album: track.album,
+            id: 1234567,
+            subjectId: track.subjectId,
             n_listens: track.n_listens + 1,
-            value: track.value,
-            purchasable: track.purchasable,
-            nftIpfsCid: track.nftIpfsCid,
-            nftAssetName: track.nftAssetName,
-            nftName: track.nftName,
-            nftDescription: track.nftDescription,
           }
       }
   });

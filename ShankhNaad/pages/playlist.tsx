@@ -1,11 +1,31 @@
 import { useRecoilValue } from "recoil";
-import { likeTracksState } from "../atoms/playerAtom";
 import { Track as TrackType } from "../types/body.types";
 import Head from "next/head";
+import { useEffect, useState } from "react";
 import Track from "../components/Track";
+import { GET_LIKED_TRACK } from "../graphql/query";
+import { useQuery } from '@apollo/client';
+import { LiveUser } from "../atoms/playerAtom";
+
 
 const Playlist = () => {
-  const likedTracks = useRecoilValue<TrackType[]>(likeTracksState);
+
+  const { loading, error, data } = useQuery(GET_LIKED_TRACK);  
+  const liveUser = useRecoilValue(LiveUser);
+  const [likedTracks, setLikedTracks] = useState<Track[]>([]);
+
+  useEffect(() => {
+    if (!loading && !error && data) {
+      const userlikedtracks = data.likedTracksFindAll ? data.likedTracksFindAll : [];
+
+      const filteredTracks = userlikedtracks
+        .filter((track) => track.user.username === liveUser.username)
+        .map((track) => track.tracks)
+        ;
+      setLikedTracks(filteredTracks[0]);
+    }
+
+  }, [loading, error, data]);
 
   return (
     <div className="md:w-[calc(100vw-120px)] w-full">

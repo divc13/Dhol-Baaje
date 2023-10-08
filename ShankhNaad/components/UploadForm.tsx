@@ -126,11 +126,10 @@ const UploadForm: React.FC = () => {
 
         setFormData({
             ...formData,
-            album: updatedAlbums
+            album: updatedAlbums.slice(-4),
         });
 
     };
-    console.log(liveUser);
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         SaveTrack({

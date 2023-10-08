@@ -19,7 +19,7 @@ function RecentlyPlayed({ track, playlist, button }: RecentlyPlayedprops) {
   const handlePlay = () => {
     chooseTrack(track, playlist);
 
-    if (track.music === playingTrack?.music) {
+    if (track.id === playingTrack?.id) {
       setPlay(!play);
     }
   };
@@ -42,7 +42,7 @@ function RecentlyPlayed({ track, playlist, button }: RecentlyPlayedprops) {
         </div>
       </div>
       <div className={button ? "flex justify-end w-1/6" : "hidden"}>
-        {track.music === playingTrack?.music && play ? (
+        {track.id === playingTrack?.id && play ? (
           <>
             <div
               className="h-10 w-10 rounded-full border border-[#15883e] flex items-center justify-center bg-[#15883e] icon hover:scale-110"

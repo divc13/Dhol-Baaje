@@ -21,11 +21,11 @@ function SongList({track, playlist} : SongParams) {
 
   const handlePlay = () => {
     chooseTrack(track, playlist);
-    if (!playingTrack || track.music === playingTrack.music) {
+    if (!playingTrack) {
       setPlay(!play);
     }
 
-    if (track.music === playingTrack?.music) {
+    if (track.id === playingTrack?.id) {
       setPlay(!play);
     }
   };
@@ -43,7 +43,7 @@ function SongList({track, playlist} : SongParams) {
             {track.title}
           </h4>
           <p className="truncate text-xs text-[#686868] font-semibold hover:underline">
-            {(track?.owner?.username || "").replace("-", " ").slice(0, 15) || ""}
+            {(track?.username || "").replace("-", " ").slice(0, 15) || ""}
           </p>
         </div>
         <div className="flex px-5 hover:scale-110">
