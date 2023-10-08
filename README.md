@@ -62,7 +62,7 @@ pnpm nx g @logosphere/sdk:init
 Build the Dhol Baaje application.
 
 ```
-pnpm nx affected:build
+pnpm nx affected:build --base=main~1
 ```
 
 ### Step 6: Configure Logosphere API for Music
