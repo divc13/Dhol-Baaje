@@ -1,5 +1,8 @@
 # Dhol Baaje - Rhythmic NFTs
 
+![image](https://github.com/divc13/Dhol-Baaje/assets/110289042/686876f9-9a93-4202-8df7-c9f211516916)
+
+
 ## Overview
 
 Dhol Baaje is a decentralized application (DApp) that empowers artists to upload their music tracks and receive valuations from the community. Users can discover and explore a wide variety of music, support artists, and engage with a vibrant musical ecosystem.
