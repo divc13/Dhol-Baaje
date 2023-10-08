@@ -257,11 +257,10 @@
   },
   {
     "_id": "_predicate",
-    "name": "track/owner",
+    "name": "track/username",
     "index": false,
     "unique": false,
-    "type": "ref",
-    "restrictCollection": "user"
+    "type": "string"
   },
   {
     "_id": "_predicate",
@@ -641,11 +640,10 @@
   },
   {
     "_id": "_predicate",
-    "name": "liked_tracks/user",
+    "name": "liked_tracks/username",
     "index": false,
     "unique": false,
-    "type": "ref",
-    "restrictCollection": "user"
+    "type": "string"
   },
   {
     "_id": "_predicate",
@@ -684,11 +682,10 @@
   },
   {
     "_id": "_predicate",
-    "name": "track_history/user",
+    "name": "track_history/username",
     "index": false,
     "unique": false,
-    "type": "ref",
-    "restrictCollection": "user"
+    "type": "string"
   },
   {
     "_id": "_predicate",
@@ -727,11 +724,10 @@
   },
   {
     "_id": "_predicate",
-    "name": "my_tracks/user",
+    "name": "my_tracks/username",
     "index": false,
     "unique": false,
-    "type": "ref",
-    "restrictCollection": "user"
+    "type": "string"
   },
   {
     "_id": "_predicate",

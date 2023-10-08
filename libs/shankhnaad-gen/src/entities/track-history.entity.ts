@@ -1,16 +1,15 @@
 import { Guard, Entity, EntityProps, Result } from '@logosphere/sdk';
 
-import { User } from './user.entity';
 import { Track } from './track.entity';
 
 interface TrackHistoryProps extends EntityProps {
-  user?: User;
+  username?: string;
   track?: Track[];
 }
 
 export class TrackHistory extends Entity<TrackHistoryProps> {
-  get user(): User {
-    return this.props.user;
+  get username(): string {
+    return this.props.username;
   }
   get track(): Track[] {
     return this.props.track;

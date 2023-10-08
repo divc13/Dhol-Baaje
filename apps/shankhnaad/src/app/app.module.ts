@@ -1,7 +1,7 @@
 import { ApolloDriver } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
-import { ShankhnaadModule } from '@dhol-baaje/shankhnaad-gen';
+import { ShankhnaadModule } from '@db/shankhnaad-gen';
 
 @Module({
   imports: [

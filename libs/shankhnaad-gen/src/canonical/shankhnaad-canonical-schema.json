@@ -294,8 +294,8 @@
           "defType": "Scalar"
         },
         {
-          "name": "owner",
-          "type": "user",
+          "name": "username",
+          "type": "string",
           "isEnabled": true,
           "isRequired": false,
           "isIndexed": false,
@@ -303,7 +303,7 @@
           "isPK": false,
           "isReadOnly": false,
           "isWriteOnly": false,
-          "defType": "Entity"
+          "defType": "Scalar"
         },
         {
           "name": "music",
@@ -608,8 +608,8 @@
       "isNft": false,
       "props": [
         {
-          "name": "user",
-          "type": "user",
+          "name": "username",
+          "type": "string",
           "isEnabled": true,
           "isRequired": false,
           "isIndexed": false,
@@ -617,7 +617,7 @@
           "isPK": false,
           "isReadOnly": false,
           "isWriteOnly": false,
-          "defType": "Entity"
+          "defType": "Scalar"
         },
         {
           "name": "track",
@@ -639,8 +639,8 @@
       "isNft": false,
       "props": [
         {
-          "name": "user",
-          "type": "user",
+          "name": "username",
+          "type": "string",
           "isEnabled": true,
           "isRequired": false,
           "isIndexed": false,
@@ -648,7 +648,7 @@
           "isPK": false,
           "isReadOnly": false,
           "isWriteOnly": false,
-          "defType": "Entity"
+          "defType": "Scalar"
         },
         {
           "name": "track",
@@ -670,8 +670,8 @@
       "isNft": false,
       "props": [
         {
-          "name": "user",
-          "type": "user",
+          "name": "username",
+          "type": "string",
           "isEnabled": true,
           "isRequired": false,
           "isIndexed": false,
@@ -679,7 +679,7 @@
           "isPK": false,
           "isReadOnly": false,
           "isWriteOnly": false,
-          "defType": "Entity"
+          "defType": "Scalar"
         },
         {
           "name": "track",

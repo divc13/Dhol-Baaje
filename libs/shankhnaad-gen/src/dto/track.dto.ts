@@ -1,5 +1,4 @@
 import { Genre } from '../enum-types';
-import { UserDto } from './user.dto';
 
 export class TrackDto {
   id?: string;
@@ -9,7 +8,7 @@ export class TrackDto {
   key?: number;
   title?: string;
   subtitle?: string;
-  owner?: UserDto;
+  username?: string;
   music?: string;
   image?: string;
   likes?: number;

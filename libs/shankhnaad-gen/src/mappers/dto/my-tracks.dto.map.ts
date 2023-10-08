@@ -2,8 +2,7 @@
 import { Injectable } from '@nestjs/common';
 import { Mapper, MapperError } from '@logosphere/sdk';
 import { MyTracksDto } from '../../dto';
-import { MyTracks, User, Track } from '../../entities';
-import { UserDtoMap } from './user.dto.map';
+import { MyTracks, Track } from '../../entities';
 import { TrackDtoMap } from './track.dto.map';
 
 @Injectable()
@@ -14,7 +13,7 @@ export class MyTracksDtoMap extends Mapper<MyTracks> {
       subjectId: data.subjectId,
       createdAt: data.createdAt ? new Date(data.createdAt) : new Date(),
       updatedAt: data.updatedAt ? new Date(data.updatedAt) : new Date(),
-      user: this.objectToEntity<User, UserDtoMap>(UserDtoMap, data['user']),
+      username: this.scalar<string>(String, data['username']),
       track: this.objectArrayToEntity<Track, TrackDtoMap>(
         TrackDtoMap,
         data['track']
@@ -33,7 +32,7 @@ export class MyTracksDtoMap extends Mapper<MyTracks> {
       id: myTracks.id,
       createdAt: myTracks.createdAt.toISOString(),
       updatedAt: myTracks.updatedAt.toISOString(),
-      user: this.entityToData<User, UserDtoMap>(UserDtoMap, myTracks.user),
+      username: this.scalar<string>(String, myTracks.username),
       track: this.entityArrayToData<Track, TrackDtoMap>(
         TrackDtoMap,
         myTracks.track

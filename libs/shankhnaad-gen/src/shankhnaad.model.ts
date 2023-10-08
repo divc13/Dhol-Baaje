@@ -152,8 +152,8 @@ class Track {
   })
   subtitle: string;
 
-  @Prop({ type: () => User, })
-  owner: string;
+  @Prop()
+  username: string;
 
   @Prop({
     examples: ['123456789'],
@@ -221,8 +221,8 @@ class Album {
 
 @Ent('liked_tracks')
 class LikedTracks {
-  @Prop({ type: () => User, })
-  user: User;
+  @Prop()
+  username: string;
 
   @Prop({ type: () => [Track], })
   track: Track[];
@@ -230,8 +230,8 @@ class LikedTracks {
 
 @Ent('track_history')
 class TrackHistory {
-  @Prop({ type: () => User, })
-  user: User;
+  @Prop()
+  username: string;
 
   @Prop({ type: () => [Track], })
   track: Track[];
@@ -239,8 +239,8 @@ class TrackHistory {
 
 @Ent('my_tracks')
 class MyTracks {
-  @Prop({ type: () => User, })
-  user: User;
+  @Prop()
+  username: string;
 
   @Prop({ type: () => [Track], })
   track: Track[];

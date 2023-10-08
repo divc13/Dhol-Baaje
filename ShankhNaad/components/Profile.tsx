@@ -16,7 +16,7 @@ const Profile = () => {
   useEffect(() => {
     if (!loading && !error && data) {
       const updatedMusicData = data.trackFindAll ? data.trackFindAll : [];
-      const userSongsFiltered = updatedMusicData.filter(track => track.owner === liveUser.username);
+      const userSongsFiltered = updatedMusicData.filter(track => track.username === liveUser.username);
       setUserSongs(userSongsFiltered);
       console.log(liveUser.id);
       console.log(userSongsFiltered);

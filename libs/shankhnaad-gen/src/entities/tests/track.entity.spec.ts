@@ -1,8 +1,6 @@
 import { Track } from '../track.entity';
 import { Genre } from '../../shankhnaad.model';
 
-import { User } from '../user.entity';
-
 describe('Track Entity', () => {
   let track: Track;
   beforeAll(() => {

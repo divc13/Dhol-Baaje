@@ -1,6 +1,5 @@
 import { MyTracks } from '../my-tracks.entity';
 
-import { User } from '../user.entity';
 import { Track } from '../track.entity';
 
 describe('MyTracks Entity', () => {

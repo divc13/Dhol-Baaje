@@ -14,6 +14,7 @@ const signup = () => {
   const currentDate = new Date();
   const sevenDaysLater = new Date();
   sevenDaysLater.setDate(currentDate.getDate() + 7);
+  const dateStr = sevenDaysLater.toISOString();
   
   const [username, setUsername] = useState('');
   const [activeUser, setActiveUser] = useRecoilState(LiveUser);
@@ -60,11 +61,10 @@ const signup = () => {
             wallet: {
               address: addr,
             },
-            subscriptionEndDate: sevenDaysLater.toISOString(),
+            subscriptionEndDate: dateStr,
           },
         },
       }).then(response => {
-        console.log("hi");
         const userId = response.data.userSave.id;
         console.log(userId);
         setActiveUser({
@@ -73,7 +73,7 @@ const signup = () => {
           wallet: {
             address: addr,
           },
-          subscriptionEndDate: sevenDaysLater.toISOString(),
+          subscriptionEndDate: dateStr,
         });
         setValidity('User Logged In');
       })

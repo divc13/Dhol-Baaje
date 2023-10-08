@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Injectable } from '@nestjs/common';
 import { Mapper, MapperError } from '@logosphere/sdk';
-import { MyTracks, User, Track } from '../../entities';
-import { UserFlureeMap } from './user.fluree.map';
+import { MyTracks, Track } from '../../entities';
 import { TrackFlureeMap } from './track.fluree.map';
 
 @Injectable()
@@ -13,9 +12,9 @@ export class MyTracksFlureeMap extends Mapper<MyTracks> {
       subjectId: String(data._id),
       createdAt: new Date(data['myTracks/createdAt'] || data.createdAt),
       updatedAt: new Date(data['myTracks/updatedAt'] || data.updatedAt),
-      user: this.objectToEntity<User, UserFlureeMap>(
-        UserFlureeMap,
-        data['myTracks/user'] || data.user
+      username: this.scalar<string>(
+        String,
+        data['myTracks/username'] || data.username
       ),
       track: this.objectArrayToEntity<Track, TrackFlureeMap>(
         TrackFlureeMap,
@@ -37,10 +36,7 @@ export class MyTracksFlureeMap extends Mapper<MyTracks> {
       'myTracks/identifier': myTracks.id,
       'myTracks/createdAt': Number(myTracks.createdAt),
       'myTracks/updatedAt': Number(myTracks.updatedAt),
-      'myTracks/user': this.entityToData<User, UserFlureeMap>(
-        UserFlureeMap,
-        myTracks.user
-      ),
+      'myTracks/username': this.scalar<string>(String, myTracks.username),
       'myTracks/track': this.entityArrayToData<Track, TrackFlureeMap>(
         TrackFlureeMap,
         myTracks.track

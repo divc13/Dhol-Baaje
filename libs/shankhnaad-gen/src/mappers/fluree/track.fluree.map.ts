@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Injectable } from '@nestjs/common';
 import { Mapper, MapperError } from '@logosphere/sdk';
-import { Track, User } from '../../entities';
-import { UserFlureeMap } from './user.fluree.map';
+import { Track } from '../../entities';
 
 import { Genre } from '../../shankhnaad.model';
 
@@ -20,9 +19,9 @@ export class TrackFlureeMap extends Mapper<Track> {
         String,
         data['track/subtitle'] || data.subtitle
       ),
-      owner: this.objectToEntity<User, UserFlureeMap>(
-        UserFlureeMap,
-        data['track/owner'] || data.owner
+      username: this.scalar<string>(
+        String,
+        data['track/username'] || data.username
       ),
       music: this.scalar<string>(String, data['track/music'] || data.music),
       image: this.scalar<string>(String, data['track/image'] || data.image),
@@ -81,10 +80,7 @@ export class TrackFlureeMap extends Mapper<Track> {
       'track/key': this.scalar<number>(Number, track.key),
       'track/title': this.scalar<string>(String, track.title),
       'track/subtitle': this.scalar<string>(String, track.subtitle),
-      'track/owner': this.entityToData<User, UserFlureeMap>(
-        UserFlureeMap,
-        track.owner
-      ),
+      'track/username': this.scalar<string>(String, track.username),
       'track/music': this.scalar<string>(String, track.music),
       'track/image': this.scalar<string>(String, track.image),
       'track/likes': this.scalar<number>(Number, track.likes),

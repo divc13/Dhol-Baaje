@@ -8,7 +8,7 @@ mutation trackCreate($track: TrackInput!) {
         key
         title
         subtitle
-        owner
+        username
         music
         image
         likes
@@ -32,7 +32,7 @@ mutation trackCreate($track: TrackInput!) {
         key
         title
         subtitle
-        owner
+        username
         music
         image
         likes
@@ -129,7 +129,7 @@ mutation trackLike($track: TrackInput!) {
             key
             title
             subtitle
-            owner
+            username
             music
             image
             likes

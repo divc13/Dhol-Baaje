@@ -1,13 +1,11 @@
 import { Guard, Entity, EntityProps, Result } from '@logosphere/sdk';
 import { Genre } from '../shankhnaad.model';
 
-import { User } from './user.entity';
-
 interface TrackProps extends EntityProps {
   key?: number;
   title?: string;
   subtitle?: string;
-  owner?: User;
+  username?: string;
   music?: string;
   image?: string;
   likes?: number;
@@ -33,8 +31,8 @@ export class Track extends Entity<TrackProps> {
   get subtitle(): string {
     return this.props.subtitle;
   }
-  get owner(): User {
-    return this.props.owner;
+  get username(): string {
+    return this.props.username;
   }
   get music(): string {
     return this.props.music;

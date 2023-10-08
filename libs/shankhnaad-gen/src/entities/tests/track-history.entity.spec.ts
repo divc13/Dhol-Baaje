@@ -1,6 +1,5 @@
 import { TrackHistory } from '../track-history.entity';
 
-import { User } from '../user.entity';
 import { Track } from '../track.entity';
 
 describe('TrackHistory Entity', () => {

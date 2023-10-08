@@ -1,6 +1,5 @@
 import { LikedTracks } from '../liked-tracks.entity';
 
-import { User } from '../user.entity';
 import { Track } from '../track.entity';
 
 describe('LikedTracks Entity', () => {

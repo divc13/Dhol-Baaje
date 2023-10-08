@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Injectable } from '@nestjs/common';
 import { Mapper, MapperError } from '@logosphere/sdk';
-import { LikedTracks, User, Track } from '../../entities';
-import { UserFlureeMap } from './user.fluree.map';
+import { LikedTracks, Track } from '../../entities';
 import { TrackFlureeMap } from './track.fluree.map';
 
 @Injectable()
@@ -13,9 +12,9 @@ export class LikedTracksFlureeMap extends Mapper<LikedTracks> {
       subjectId: String(data._id),
       createdAt: new Date(data['likedTracks/createdAt'] || data.createdAt),
       updatedAt: new Date(data['likedTracks/updatedAt'] || data.updatedAt),
-      user: this.objectToEntity<User, UserFlureeMap>(
-        UserFlureeMap,
-        data['likedTracks/user'] || data.user
+      username: this.scalar<string>(
+        String,
+        data['likedTracks/username'] || data.username
       ),
       track: this.objectArrayToEntity<Track, TrackFlureeMap>(
         TrackFlureeMap,
@@ -37,10 +36,7 @@ export class LikedTracksFlureeMap extends Mapper<LikedTracks> {
       'likedTracks/identifier': likedTracks.id,
       'likedTracks/createdAt': Number(likedTracks.createdAt),
       'likedTracks/updatedAt': Number(likedTracks.updatedAt),
-      'likedTracks/user': this.entityToData<User, UserFlureeMap>(
-        UserFlureeMap,
-        likedTracks.user
-      ),
+      'likedTracks/username': this.scalar<string>(String, likedTracks.username),
       'likedTracks/track': this.entityArrayToData<Track, TrackFlureeMap>(
         TrackFlureeMap,
         likedTracks.track

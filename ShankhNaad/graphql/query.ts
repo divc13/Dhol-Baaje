@@ -44,7 +44,7 @@ export const GET_ALL_SONGS = gql`
             key
             title
             subtitle
-            owner 
+            username 
             music
             image
             likes
@@ -97,7 +97,7 @@ query trackLikedAll {
             key
             title
             subtitle
-            owner
+            username
             music
             image
             likes

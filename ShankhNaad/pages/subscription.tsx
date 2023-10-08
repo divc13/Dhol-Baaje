@@ -1,5 +1,5 @@
 import Head from "next/head";
-import Subscription from "../components/Login";
+import Subscription from "../components/Subscription";
 
 export default function LoginPage() {
 

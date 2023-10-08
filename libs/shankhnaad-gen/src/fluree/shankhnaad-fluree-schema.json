@@ -264,11 +264,10 @@
         },
         {
           "_id": "_predicate",
-          "name": "owner",
+          "name": "username",
           "index": false,
           "unique": false,
-          "type": "ref",
-          "restrictCollection": "user"
+          "type": "string"
         },
         {
           "_id": "_predicate",
@@ -658,11 +657,10 @@
         },
         {
           "_id": "_predicate",
-          "name": "user",
+          "name": "username",
           "index": false,
           "unique": false,
-          "type": "ref",
-          "restrictCollection": "user"
+          "type": "string"
         },
         {
           "_id": "_predicate",
@@ -703,11 +701,10 @@
         },
         {
           "_id": "_predicate",
-          "name": "user",
+          "name": "username",
           "index": false,
           "unique": false,
-          "type": "ref",
-          "restrictCollection": "user"
+          "type": "string"
         },
         {
           "_id": "_predicate",
@@ -748,11 +745,10 @@
         },
         {
           "_id": "_predicate",
-          "name": "user",
+          "name": "username",
           "index": false,
           "unique": false,
-          "type": "ref",
-          "restrictCollection": "user"
+          "type": "string"
         },
         {
           "_id": "_predicate",

@@ -3,7 +3,7 @@ export interface Track {
   key: string;
   title: string;
   subtitle: string;
-  owner: string;
+  username: string;
   music: string;
   image: string;
   likes: number;
@@ -58,17 +58,17 @@ export interface User {
 }
 
 export interface LikedTracks {
-    user: User;
+    username: string;
     tracks: Track[];
 }
 
 export interface TrackHistory {
-  user: User;
+  username: string;
   tracks: Track[];
 }
 
 export interface MyTracks {
-  user: User;
+  username: string;
   tracks: Track[];
 }
 

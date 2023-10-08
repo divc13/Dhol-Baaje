@@ -2,8 +2,7 @@
 import { Injectable } from '@nestjs/common';
 import { Mapper, MapperError } from '@logosphere/sdk';
 import { TrackDto } from '../../dto';
-import { Track, User } from '../../entities';
-import { UserDtoMap } from './user.dto.map';
+import { Track } from '../../entities';
 
 import { Genre } from '../../shankhnaad.model';
 
@@ -18,7 +17,7 @@ export class TrackDtoMap extends Mapper<Track> {
       key: this.scalar<number>(Number, data['key']),
       title: this.scalar<string>(String, data['title']),
       subtitle: this.scalar<string>(String, data['subtitle']),
-      owner: this.objectToEntity<User, UserDtoMap>(UserDtoMap, data['owner']),
+      username: this.scalar<string>(String, data['username']),
       music: this.scalar<string>(String, data['music']),
       image: this.scalar<string>(String, data['image']),
       likes: this.scalar<number>(Number, data['likes']),
@@ -49,7 +48,7 @@ export class TrackDtoMap extends Mapper<Track> {
       key: this.scalar<number>(Number, track.key),
       title: this.scalar<string>(String, track.title),
       subtitle: this.scalar<string>(String, track.subtitle),
-      owner: this.entityToData<User, UserDtoMap>(UserDtoMap, track.owner),
+      username: this.scalar<string>(String, track.username),
       music: this.scalar<string>(String, track.music),
       image: this.scalar<string>(String, track.image),
       likes: this.scalar<number>(Number, track.likes),

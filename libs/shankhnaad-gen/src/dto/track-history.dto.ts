@@ -1,4 +1,3 @@
-import { UserDto } from './user.dto';
 import { TrackDto } from './track.dto';
 
 export class TrackHistoryDto {
@@ -6,6 +5,6 @@ export class TrackHistoryDto {
   subjectId?: string;
   createdAt?: string;
   updatedAt?: string;
-  user?: UserDto;
+  username?: string;
   track?: TrackDto[];
 }

@@ -10,6 +10,7 @@ const albumOptions = Object.values(Genre);
 
 const UploadForm: React.FC = () => {
     const liveUser = useRecoilValue(LiveUser);
+    console.log(liveUser);
 
     const [SaveTrack, { data, loading, error }] = useMutation(MINT_TRACK, {
         context: {
@@ -18,6 +19,7 @@ const UploadForm: React.FC = () => {
             }
         }
     });
+    
     const [imageData, setImageData] = useState("Select an image file!");
     const [imageurl, setImageurl] = useState("");
     const [musicurl, setMusicurl] = useState("");
@@ -59,6 +61,7 @@ const UploadForm: React.FC = () => {
             alert('Please select an image to upload.');
             return;
         }
+        setImageData("Uploading ...");
         if (file) {
             event.target.parentElement?.classList.add('bg-green-700');
         }
@@ -86,7 +89,7 @@ const UploadForm: React.FC = () => {
             alert('Please select an audio to upload.');
             return;
         }
-
+        setAudioData("Uploading ...");
         if (file) {
             event.target.parentElement?.classList.add('bg-green-700');
         }
@@ -107,6 +110,7 @@ const UploadForm: React.FC = () => {
         } catch (error) {
             console.error('Error:', error);
         }
+
     };
 
     const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -144,7 +148,7 @@ const UploadForm: React.FC = () => {
                     nftAssetName: "Dhol Baaje",
                     nftName: "Dhol Baaje - " + formData.title,
                     nftDescription: "Dhol Baaje Song - " + formData.description,
-                    owner: liveUser.username,
+                    username: liveUser.username,
                 }
             }
         }).then(() => {
@@ -186,6 +190,7 @@ const UploadForm: React.FC = () => {
                                 <p>Cover Art:</p>
                                 <label className="border border-gray-300 rounded p-2 m-2 mr-0 transparant hover:bg-green-700 max-w-[80%]" htmlFor="image">
                                     <input type="file" id="image" name="image" required accept="image/*" onChange={handleImageChange} className="w-full hidden" />
+
                                     <p className="text-ellipsis max-w-full overflow-hidden">{imageData}</p>
                                 </label>
                             </div>
