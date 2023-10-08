@@ -1,5 +1,6 @@
 export interface Track {
-  id: ID;
+  id: string;
+  subjectId: number;
   key: string;
   title: string;
   subtitle: string;
@@ -12,10 +13,13 @@ export interface Track {
   album: Genre[];
   value: number;
   purchasable: number;
-  nftIpfsCid: string,
-  nftAssetName: string,
-  nftName: string,
-  nftDescription: string,
+  nftIpfsCid: string;
+  nftCardanoTxId: string;
+  nftName: string;
+  nftDescription: string;
+  nftAssetName: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export enum Genre {
@@ -58,6 +62,7 @@ export interface User {
 }
 
 export interface LikedTracks {
+    id: Id;
     username: string;
     tracks: Track[];
 }

@@ -116,7 +116,7 @@ const Login = () => {
           {validity === 'Wallet not Registered' &&
           <>
             <Link href="/signup"><button className="transparent hover:bg-green-700 border boder:white py-3 px-7 text-xl mb-5 rounded">New User? Sign Up!!</button></Link>
-            <div>This wallet is not registered.</div>
+            <div  className="text-red-500">This wallet is not registered.</div>
             <CardanoWallet label="Sign In with Cardano" onConnected={() => frontendStartLoginProcess()} />
           </>}
         </div>

@@ -20,11 +20,11 @@ function MySongs() {
 
   const handlePlay = (track: Track) => {
     chooseTrack(track, Tracks);
-    if (!playingTrack || track.music === playingTrack.music) {
+    if (!playingTrack) {
       setPlay(!play);
     }
 
-    if (track.music === playingTrack?.music) {
+    if (track.id === playingTrack?.id) {
       setPlay(!play);
     }
   };

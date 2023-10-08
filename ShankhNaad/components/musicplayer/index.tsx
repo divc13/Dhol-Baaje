@@ -27,9 +27,9 @@ const MusicPlayer = () => {
   const [shuffle, setShuffle] = useState(false);
   const { chooseTrack } = useContext(TrackContext);
 
-  const currentTrackKey = playingTrack?.key;
+  const currentTrackKey = playingTrack?.id;
   const index = currentPlaylist.findIndex(
-    (track: TrackType) => track.key === currentTrackKey
+    (track: TrackType) => track.id === currentTrackKey
   );
 
   const handleKeyPress = (event: any) => {

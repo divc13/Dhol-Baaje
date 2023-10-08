@@ -1,10 +1,14 @@
 import { BsFillPauseFill, BsFillPlayFill } from "react-icons/bs";
 import { Track } from "../types/body.types";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { likeTracksState, playingTrackState, playState } from "../atoms/playerAtom";
+import { playingTrackState, playState } from "../atoms/playerAtom";
 import TrackContext from "../hooks/trackContext";
 import { useContext, useState, useEffect } from "react";
 import Heart from "./track/Heart";
+import { useMutation, useQuery } from '@apollo/client';
+import { LiveUser } from "../atoms/playerAtom";
+import { GET_LIKED_TRACK } from "../graphql/query";
+import { DELETE_TRACK, SAVE_TRACK, LIKE_TRACK } from "../graphql/mutation"
 
 interface PosterProps {
     track : Track
@@ -14,12 +18,32 @@ interface PosterProps {
 function Poster({ track, playlist }: PosterProps) {
   const [hasLiked, setHasLiked] = useState<boolean>(false);
   const [play, setPlay] = useRecoilState<boolean>(playState);
-  const [likedTracks, setLikedTracks] = useRecoilState<Track[]>(likeTracksState);
   const playingTrack = useRecoilValue<Track>(playingTrackState);
   const {chooseTrack} = useContext(TrackContext)
 
+  const [likedTracks, setLikedTracks] = useState<Track[]>([]);
+  const { loading, error, data } = useQuery(GET_LIKED_TRACK);
+  const liveUser = useRecoilValue(LiveUser);
+  const [Save_Track] = useMutation(SAVE_TRACK);
+  const [Like_Track] = useMutation(LIKE_TRACK);
+  const [Delete_Track] = useMutation(DELETE_TRACK);
+
+
+  useEffect(() => {
+    if (!loading && !error && data) {
+      const userlikedtracks = data.likedTracksFindAll ? data.likedTracksFindAll : [];
+
+      const filteredTracks = userlikedtracks
+        .filter((track) => track.user.username === liveUser.username)
+        .map((track) => track.tracks)
+        ;
+      setLikedTracks(filteredTracks[0]);
+    }
+
+  }, [loading, error, data]);
+
   const index = likedTracks?.findIndex(
-    (tracks: Track) => tracks.key === track.key
+    (tracks: Track) => tracks.id === track.id
   );
 
   useEffect(() => {
@@ -28,22 +52,52 @@ function Poster({ track, playlist }: PosterProps) {
   }, [index]);
 
   const handlePlay = () => {
-    chooseTrack(track, playlist );
+    chooseTrack(track, playlist);
     if(!playingTrack){
         setPlay(!play)
     }
 
-    if (track.music === playingTrack?.music) {
+    if (track.id === playingTrack?.id) {
       setPlay(!play);
     }
   };
 
   function handleLike() {
     if (index == -1) {
-      setLikedTracks(()=>[...likedTracks, track]);
-    } else {
-      const newAraay = likedTracks.filter((el: Track) => el.key !== track.key);
-      setLikedTracks(()=>newAraay);
+      setLikedTracks([...likedTracks, track]);
+      Save_Track({
+        variables: {
+          track: {
+            id: track.id,
+            likes: track.likes + 1,
+          }
+        }
+      });
+      Like_Track({
+        variables:{
+          tracks: likedTracks,
+          user: liveUser
+        }
+      })
+
+    } 
+    else {
+      Save_Track({
+        variables: {
+          track: {
+            id: track.id,
+            likes: track.likes - 1,
+          }
+        }
+      });
+      const newAraay = likedTracks.filter((el: Track) => el.id !== track.id);
+      setLikedTracks(newAraay);
+      Like_Track({
+        variables:{
+          tracks: likedTracks,
+          user: liveUser
+        }
+      })
     }
   }
 
@@ -63,7 +117,7 @@ function Poster({ track, playlist }: PosterProps) {
 
       <div className="absolute bottom-4 inset-x-0 ml-1 flex items-center space-x-2">
         <div className="w-4 h-4 sm:h-10 sm:w-10 bg-[#15883e] rounded-full flex items-center justify-center group-hover:bg-[#1db954] flex-shrink-0">
-          {track.music === playingTrack?.music && play ? (
+          {track.id === playingTrack?.id && play ? (
             <BsFillPauseFill className="text-white text-xl" />
           ) : (
             <BsFillPlayFill className="text-white text-xl ml-[1px]" />

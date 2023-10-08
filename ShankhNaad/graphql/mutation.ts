@@ -54,6 +54,12 @@ mutation Delete_Track($id: ID!) {
 }
 `;
 
+export const DELETE_LIKED_TRACK = gql`
+mutation Delete_Track($id: ID!) {
+  likedtracksDelete(id: $id)
+}
+`;
+
 export const SAVE_WALLET = gql`
 mutation walletCreate($wallet: WalletInput!) {
     walletSave(wallet: $wallet) {

@@ -19,10 +19,8 @@ const Body = () => {
     if (!loading && !error && data) {
       const updatedMusicData = data.trackFindAll ? data.trackFindAll : [];
       setMusicData(updatedMusicData);
-      const musicDataCopy = [...updatedMusicData];
-      const top20Songs = musicDataCopy.sort((a, b) => b.likes - a.likes);
-      console.log(top20Songs);
-      setShowHomePlaylist([...top20Songs]);
+      const top20Songs = [...updatedMusicData].sort((a, b) => b.likes - a.likes);
+      setShowHomePlaylist([...top20Songs].slice(0,20));
     }
 
   }, [loading, error, data]);

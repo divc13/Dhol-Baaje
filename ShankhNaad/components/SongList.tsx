@@ -21,11 +21,11 @@ function SongList({track, playlist} : SongParams) {
 
   const handlePlay = () => {
     chooseTrack(track, playlist);
-    if (!playingTrack || track.music === playingTrack.music) {
+    if (!playingTrack) {
       setPlay(!play);
     }
 
-    if (track.music === playingTrack?.music) {
+    if (track.id === playingTrack?.id) {
       setPlay(!play);
     }
   };
