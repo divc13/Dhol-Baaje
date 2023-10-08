@@ -31,7 +31,7 @@ const Login = () => {
         console.log("success");
         const addr = await wallet.getChangeAddress();
         const liveUser = data.userFindAll.filter((user) =>{ return user && user.wallet.address === addr});
-        if (!data || !liveUser){
+        if (!data || liveUser.length == 0){
           setValidity('Wallet not Registered');
           disconnect();
         }

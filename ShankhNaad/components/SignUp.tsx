@@ -53,27 +53,35 @@ const signup = () => {
         disconnect();
       } 
       else {
-        setActiveUser({
+      Save_User({
+        variables: {
+          user: {
             username: username,
             wallet: {
               address: addr,
             },
             subscriptionEndDate: sevenDaysLater.toISOString(),
-        });
-        Save_User({
-          variables: {
-            user: {
-              username: username,
-              wallet: {
-                address: addr,
-              },
-            },
           },
+        },
+      }).then(response => {
+        console.log("hi");
+        const userId = response.data.userSave.id;
+        console.log(userId);
+        setActiveUser({
+          id: userId,
+          username: username,
+          wallet: {
+            address: addr,
+          },
+          subscriptionEndDate: sevenDaysLater.toISOString(),
         });
         setValidity('User Logged In');
-      }
-    } else {
-      console.log('fail');
+      })
+      .catch((error) => {
+        alert('Sign Up failed.');
+        console.error('Error:', error);
+    });
+  }
     }
   }
 

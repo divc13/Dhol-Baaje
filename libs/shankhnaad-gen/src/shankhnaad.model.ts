@@ -153,7 +153,7 @@ class Track {
   subtitle: string;
 
   @Prop({ type: () => User, })
-  owner: User;
+  owner: string;
 
   @Prop({
     examples: ['123456789'],

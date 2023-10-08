@@ -19,6 +19,8 @@ const UploadForm: React.FC = () => {
         }
     });
     const [imageData, setImageData] = useState("Select an image file!");
+    const [imageurl, setImageurl] = useState("");
+    const [musicurl, setMusicurl] = useState("");
     const [audioData, setAudioData] = useState("Select an audio file!");
     const [formData, setFormData] = useState({
         title: '',
@@ -30,15 +32,17 @@ const UploadForm: React.FC = () => {
         nftIpfsCid: '',
     });
 
+    console.log(formData);
+
     const [filesSelected, setFilesSelected] = useState(false);
 
     useEffect(() => {
-        if (formData.image && formData.music && formData.title && formData.subtitle && formData.description) {
+        if (imageurl && musicurl && formData.title && formData.subtitle && formData.description) {
             setFilesSelected(true);
         } else {
             setFilesSelected(false);
         }
-    }, [formData.image, formData.music, formData.title, formData.subtitle, formData.description]);
+    }, [musicurl, imageurl, formData.title, formData.subtitle, formData.description]);
 
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -66,7 +70,7 @@ const UploadForm: React.FC = () => {
                 if (ipfsHash) {
                     const url = `${process.env.GATEWAY}/ipfs/${ipfsHash}`;
                     console.log('File uploaded successfully. URL:', url);
-                    formData.image = url;
+                    setImageurl(url);
                     setImageData(event.target.value.replace(/.*(\/|\\)/, '') || "Select an image file!")
                 } else {
                     console.log('File upload failed.');
@@ -95,7 +99,7 @@ const UploadForm: React.FC = () => {
                 formData.nftIpfsCid = ipfsHash;
                 const url = `${process.env.GATEWAY}/ipfs/${ipfsHash}`;
                 console.log('File uploaded successfully. URL:', url);
-                formData.music = url;
+                setMusicurl(url);
                 setAudioData(event.target.value.replace(/.*(\/|\\)/, '') || "Select an audio file!");
             } else {
                 console.log('File upload failed.');
@@ -103,9 +107,7 @@ const UploadForm: React.FC = () => {
         } catch (error) {
             console.error('Error:', error);
         }
-
     };
-
 
     const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const value = event.target.value;
@@ -124,9 +126,7 @@ const UploadForm: React.FC = () => {
         });
 
     };
-
-    const [submissionStatus, setSubmissionStatus] = useState('');
-
+    console.log(liveUser);
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         SaveTrack({
@@ -134,8 +134,8 @@ const UploadForm: React.FC = () => {
                 track: {
                     title: formData.title,
                     subtitle: formData.subtitle,
-                    music: formData.music,
-                    image: formData.image,
+                    music: musicurl,
+                    image: imageurl,
                     description: formData.description,
                     album: formData.album,
                     likes: 0,
@@ -144,10 +144,11 @@ const UploadForm: React.FC = () => {
                     nftAssetName: "Dhol Baaje",
                     nftName: "Dhol Baaje - " + formData.title,
                     nftDescription: "Dhol Baaje Song - " + formData.description,
+                    owner: liveUser.username,
                 }
             }
         }).then(() => {
-            setSubmissionStatus('Form submitted successfully!');
+            alert('Form submitted successfully!');
             formData.music = '';
             formData.title = '';
             formData.subtitle = '';
@@ -157,8 +158,9 @@ const UploadForm: React.FC = () => {
             formData.nftIpfsCid = '';
             setAudioData("Select an audio file!");
             setImageData("Select an image file!");
+
         }).catch((error) => {
-            setSubmissionStatus('Form submission failed.');
+            alert('Form submission failed.');
             console.error('Error:', error);
         });
 
@@ -219,11 +221,6 @@ const UploadForm: React.FC = () => {
                     <button type="submit" className={`bg-green-500 text-white px-4 py-2 my-4 rounded hover:bg-green-700 ${!filesSelected ? 'pointer-events-none opacity-50' : ''}`} disabled={!filesSelected}>Submit</button>
                 </form >
             }
-            {submissionStatus && (
-                <div className="text-white">
-                    {submissionStatus}
-                </div>
-            )}
         </section >
     );
 };

@@ -3,7 +3,7 @@ export interface Track {
   key: string;
   title: string;
   subtitle: string;
-  owner: User;
+  owner: string;
   music: string;
   image: string;
   likes: number;
@@ -51,6 +51,7 @@ export interface Wallet {
 }
 
 export interface User {
+  id: Id;
   username: string;
   wallet: Wallet;
   subscriptionEndDate: string;

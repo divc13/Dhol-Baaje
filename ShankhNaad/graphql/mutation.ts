@@ -8,37 +8,7 @@ mutation trackCreate($track: TrackInput!) {
         key
         title
         subtitle
-        owner {
-                id
-            subjectId
-            username
-            wallet {
-                    id
-                subjectId
-                name
-                walletId
-                address
-                publicKey
-                balance
-                assets {
-                    id
-                subjectId
-                name
-                fingerprint
-                policyId
-                quantity
-                metadata
-                assetSubjectId
-                logosphereId
-                createdAt
-                updatedAt
-                }
-                createdAt
-                updatedAt
-            }
-            createdAt
-            updatedAt
-        }
+        owner
         music
         image
         likes
@@ -62,37 +32,7 @@ mutation trackCreate($track: TrackInput!) {
         key
         title
         subtitle
-        owner {
-                id
-            subjectId
-            username
-            wallet {
-                    id
-                subjectId
-                name
-                walletId
-                address
-                publicKey
-                balance
-                assets {
-                    id
-                subjectId
-                name
-                fingerprint
-                policyId
-                quantity
-                metadata
-                assetSubjectId
-                logosphereId
-                createdAt
-                updatedAt
-                }
-                createdAt
-                updatedAt
-            }
-            createdAt
-            updatedAt
-        }
+        owner
         music
         image
         likes
@@ -189,37 +129,7 @@ mutation trackLike($track: TrackInput!) {
             key
             title
             subtitle
-            owner {
-                    id
-                subjectId
-                username
-                wallet {
-                        id
-                    subjectId
-                    name
-                    walletId
-                    address
-                    publicKey
-                    balance
-                    assets {
-                        id
-                    subjectId
-                    name
-                    fingerprint
-                    policyId
-                    quantity
-                    metadata
-                    assetSubjectId
-                    logosphereId
-                    createdAt
-                    updatedAt
-                    }
-                    createdAt
-                    updatedAt
-                }
-                createdAt
-                updatedAt
-            }
+            owner
             music
             image
             likes

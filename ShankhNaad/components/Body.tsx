@@ -11,26 +11,26 @@ import { useQuery } from "@apollo/client";
 
 const Body = () => {
 
-  const [musicData, setMusicData] = useState<Track[]>([]);
-
+  const [musicData, setMusicData] = useState<TrackType[]>([]);
+  const [showHomePlaylist, setShowHomePlaylist] = useState<TrackType[]>([]);
   const { loading, error, data } = useQuery(GET_ALL_SONGS);
 
   useEffect(() => {
     if (!loading && !error && data) {
       const updatedMusicData = data.trackFindAll ? data.trackFindAll : [];
       setMusicData(updatedMusicData);
+      const musicDataCopy = [...updatedMusicData];
+      const top20Songs = musicDataCopy.sort((a, b) => b.likes - a.likes);
+      console.log(top20Songs);
+      setShowHomePlaylist([...top20Songs]);
     }
 
   }, [loading, error, data]);
 
-  const musicDataCopy = [...musicData];
-  const top20Songs = musicDataCopy.sort((a, b) => b.likes - a.likes);
+
   const [search, setSearch] = useState<string>("");
   const [searchResults, setSearchresults] = useState<TrackType[]>([]);
   const [selectedGenre, setSelectedGenre] = useState<string>("");
-  
-  const [showHomePlaylist, setShowHomePlaylist] = useState<TrackType[]>( top20Songs.slice(20));
-  
   
   const genres = Object.values(Genre);
 
