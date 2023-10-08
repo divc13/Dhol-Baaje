@@ -43,7 +43,7 @@ function SongList({track, playlist} : SongParams) {
             {track.title}
           </h4>
           <p className="truncate text-xs text-[#686868] font-semibold hover:underline">
-            {(track?.owner?.username || "").replace("-", " ").slice(0, 15) || ""}
+            {(track?.username || "").replace("-", " ").slice(0, 15) || ""}
           </p>
         </div>
         <div className="flex px-5 hover:scale-110">

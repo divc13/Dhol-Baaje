@@ -4,14 +4,15 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import { LiveUser } from "../atoms/playerAtom";
 import { useRouter } from 'next/router';
 
-const Subscription = () => {
+function Subscription () {
   const liveUser = useRecoilValue(LiveUser);
   const currentDate = new Date();
   const router = useRouter();
+  const referer = router.query.referer as string | "/";
 
-  // if (!liveUser || (liveUser.subscriptionEndDate && (new Date(liveUser.subscriptionEndDate) > currentDate))) {
-  //   router.push('/');
-  // }
+  if (!liveUser || (liveUser.subscriptionEndDate && (new Date(liveUser.subscriptionEndDate) > currentDate))) {
+    router.push(referer);
+  }
 
   const handleSubscription = () => {
 

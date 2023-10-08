@@ -1,35 +1,3 @@
-// // PrivateRoute.tsx
-// import { useContext, useEffect } from 'react';
-// import { useRouter } from 'next/router';
-// import { useWallet } from "@meshsdk/react";
-// import { LiveUser } from './atoms/playerAtom';
-// import { useRecoilValue } from 'recoil';
-
-// const PrivateRoute = (WrappedComponent: React.ComponentType) => {
-//   const WrapperComponent = (props: any) => {
-//     const { connected } = useWallet();
-//     const router = useRouter();
-
-//     useEffect(() => {
-//       if (!connected) {
-//         router.push('/login');
-//       }
-//     }, [connected, router]);
-
-//     if (!connected) {
-//       return null;
-//     }
-
-//     return <WrappedComponent {...props} />;
-//   };
-
-//   return WrapperComponent;
-// };
-
-// export default PrivateRoute;
-
-
-// PrivateRoute.tsx
 import { useContext, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useWallet } from "@meshsdk/react";
@@ -40,7 +8,7 @@ const PrivateRoute = (WrappedComponent: React.ComponentType) => {
   const WrapperComponent = (props: any) => {
     const { connected } = useWallet();
     const router = useRouter();
-    const liveUser = useRecoilValue(LiveUser); // Assuming you're using Recoil for liveUser state
+    const liveUser = useRecoilValue(LiveUser); 
     const currentDate = new Date();
 
     useEffect(() => {
