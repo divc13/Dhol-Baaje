@@ -13,7 +13,6 @@ export class TrackFlureeMap extends Mapper<Track> {
       subjectId: String(data._id),
       createdAt: new Date(data['track/createdAt'] || data.createdAt),
       updatedAt: new Date(data['track/updatedAt'] || data.updatedAt),
-      key: this.scalar<number>(Number, data['track/key'] || data.key),
       title: this.scalar<string>(String, data['track/title'] || data.title),
       subtitle: this.scalar<string>(
         String,
@@ -30,19 +29,12 @@ export class TrackFlureeMap extends Mapper<Track> {
         Number,
         data['track/n_listens'] || data.n_listens
       ),
-      description: this.scalar<string>(
-        String,
-        data['track/description'] || data.description
-      ),
+      lyrics: this.scalar<string>(String, data['track/lyrics'] || data.lyrics),
       album: this.enumArray<typeof Genre>(
         Genre,
         data['track/album'] || data.album
       ),
       value: this.scalar<number>(Number, data['track/value'] || data.value),
-      purchasable: this.scalar<number>(
-        Number,
-        data['track/purchasable'] || data.purchasable
-      ),
       nftIpfsCid: this.scalar<string>(
         String,
         data['track/nftIpfsCid'] || data.nftIpfsCid
@@ -77,7 +69,6 @@ export class TrackFlureeMap extends Mapper<Track> {
       'track/identifier': track.id,
       'track/createdAt': Number(track.createdAt),
       'track/updatedAt': Number(track.updatedAt),
-      'track/key': this.scalar<number>(Number, track.key),
       'track/title': this.scalar<string>(String, track.title),
       'track/subtitle': this.scalar<string>(String, track.subtitle),
       'track/username': this.scalar<string>(String, track.username),
@@ -85,10 +76,9 @@ export class TrackFlureeMap extends Mapper<Track> {
       'track/image': this.scalar<string>(String, track.image),
       'track/likes': this.scalar<number>(Number, track.likes),
       'track/n_listens': this.scalar<number>(Number, track.n_listens),
-      'track/description': this.scalar<string>(String, track.description),
+      'track/lyrics': this.scalar<string>(String, track.lyrics),
       'track/album': this.enumArray<typeof Genre>(Genre, track.album),
       'track/value': this.scalar<number>(Number, track.value),
-      'track/purchasable': this.scalar<number>(Number, track.purchasable),
       'track/nftIpfsCid': this.scalar<string>(String, track.nftIpfsCid),
       'track/nftCardanoTxId': this.scalar<string>(String, track.nftCardanoTxId),
       'track/nftName': this.scalar<string>(String, track.nftName),

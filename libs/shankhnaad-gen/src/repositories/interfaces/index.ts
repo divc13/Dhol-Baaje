@@ -2,8 +2,3 @@ export * from './wallet-asset.repo.interface';
 export * from './wallet.repo.interface';
 export * from './user.repo.interface';
 export * from './track.repo.interface';
-export * from './reorderprops.repo.interface';
-export * from './album.repo.interface';
-export * from './liked-tracks.repo.interface';
-export * from './track-history.repo.interface';
-export * from './my-tracks.repo.interface';

@@ -58,6 +58,11 @@ type User {
   username: String
   wallet: Wallet
   subscriptionEndDate: String
+  myTracksId: [String]
+  likedTracksId: [String]
+  historyTracksId: [String]
+  rewards: Int
+  likes: Int
   createdAt: String
   updatedAt: String
 }
@@ -68,6 +73,11 @@ input UserInput {
   username: String
   wallet: WalletInput
   subscriptionEndDate: String
+  myTracksId: [String]
+  likedTracksId: [String]
+  historyTracksId: [String]
+  rewards: Int
+  likes: Int
   createdAt: String
   updatedAt: String
 }
@@ -75,7 +85,6 @@ input UserInput {
 type Track {
   id: ID
   subjectId: String
-  key: Int
   title: String
   subtitle: String
   username: String
@@ -83,10 +92,9 @@ type Track {
   image: String
   likes: Int
   n_listens: Int
-  description: String
+  lyrics: String
   album: [Genre]
   value: Int
-  purchasable: Int
   nftIpfsCid: String
   nftCardanoTxId: String
   nftName: String
@@ -99,7 +107,6 @@ type Track {
 input TrackInput {
   id: ID
   subjectId: String
-  key: Int
   title: String
   subtitle: String
   username: String
@@ -107,107 +114,14 @@ input TrackInput {
   image: String
   likes: Int
   n_listens: Int
-  description: String
+  lyrics: String
   album: [Genre]
   value: Int
-  purchasable: Int
   nftIpfsCid: String
   nftCardanoTxId: String
   nftName: String
   nftDescription: String
   nftAssetName: String
-  createdAt: String
-  updatedAt: String
-}
-
-type Reorderprops {
-  id: ID
-  subjectId: String
-  list: [Track]
-  startIndex: Int
-  endIndex: Int
-  createdAt: String
-  updatedAt: String
-}
-
-input ReorderpropsInput {
-  id: ID
-  subjectId: String
-  list: [TrackInput]
-  startIndex: Int
-  endIndex: Int
-  createdAt: String
-  updatedAt: String
-}
-
-type Album {
-  id: ID
-  subjectId: String
-  genre: Genre
-  track: [Track]
-  createdAt: String
-  updatedAt: String
-}
-
-input AlbumInput {
-  id: ID
-  subjectId: String
-  genre: Genre
-  track: [TrackInput]
-  createdAt: String
-  updatedAt: String
-}
-
-type LikedTracks {
-  id: ID
-  subjectId: String
-  username: String
-  track: [Track]
-  createdAt: String
-  updatedAt: String
-}
-
-input LikedTracksInput {
-  id: ID
-  subjectId: String
-  username: String
-  track: [TrackInput]
-  createdAt: String
-  updatedAt: String
-}
-
-type TrackHistory {
-  id: ID
-  subjectId: String
-  username: String
-  track: [Track]
-  createdAt: String
-  updatedAt: String
-}
-
-input TrackHistoryInput {
-  id: ID
-  subjectId: String
-  username: String
-  track: [TrackInput]
-  createdAt: String
-  updatedAt: String
-}
-
-type MyTracks {
-  id: ID
-  subjectId: String
-  username: String
-  track: [Track]
-  createdAt: String
-  updatedAt: String
-}
-
-input MyTracksInput {
-  id: ID
-  subjectId: String
-  username: String
-  track: [TrackInput]
   createdAt: String
   updatedAt: String
 }
@@ -312,31 +226,6 @@ type Query {
   trackFindAllByNftName(nftName: String): [Track]
   trackFindAllByNftDescription(nftDescription: String): [Track]
   trackFindAllByNftAssetName(nftAssetName: String): [Track]
-  reorderpropsExists(id: ID): Boolean
-  reorderpropsFindAll(id: ID): [Reorderprops]
-  reorderpropsFindOneById(id: ID): Reorderprops
-  reorderpropsFindOneBySubjectId(subjectId: String): Reorderprops
-  reorderpropsFindManyById(idList: [ID]): [Reorderprops]
-  albumExists(id: ID): Boolean
-  albumFindAll(id: ID): [Album]
-  albumFindOneById(id: ID): Album
-  albumFindOneBySubjectId(subjectId: String): Album
-  albumFindManyById(idList: [ID]): [Album]
-  likedTracksExists(id: ID): Boolean
-  likedTracksFindAll(id: ID): [LikedTracks]
-  likedTracksFindOneById(id: ID): LikedTracks
-  likedTracksFindOneBySubjectId(subjectId: String): LikedTracks
-  likedTracksFindManyById(idList: [ID]): [LikedTracks]
-  trackHistoryExists(id: ID): Boolean
-  trackHistoryFindAll(id: ID): [TrackHistory]
-  trackHistoryFindOneById(id: ID): TrackHistory
-  trackHistoryFindOneBySubjectId(subjectId: String): TrackHistory
-  trackHistoryFindManyById(idList: [ID]): [TrackHistory]
-  myTracksExists(id: ID): Boolean
-  myTracksFindAll(id: ID): [MyTracks]
-  myTracksFindOneById(id: ID): MyTracks
-  myTracksFindOneBySubjectId(subjectId: String): MyTracks
-  myTracksFindManyById(idList: [ID]): [MyTracks]
   getWalletBalance(walletId: String): Float
   getWallet(walletId: String, mnemonic: String): Wallet
   generateKeys(username: String): WalletKeyPair
@@ -359,16 +248,6 @@ type Mutation {
   trackDelete(id: ID): Boolean
   trackMintNft(track: TrackInput): Track
   trackMintNftTx(track: TrackInput): String
-  reorderpropsSave(reorderprops: ReorderpropsInput): Reorderprops
-  reorderpropsDelete(id: ID): Boolean
-  albumSave(album: AlbumInput): Album
-  albumDelete(id: ID): Boolean
-  likedTracksSave(likedTracks: LikedTracksInput): LikedTracks
-  likedTracksDelete(id: ID): Boolean
-  trackHistorySave(trackHistory: TrackHistoryInput): TrackHistory
-  trackHistoryDelete(id: ID): Boolean
-  myTracksSave(myTracks: MyTracksInput): MyTracks
-  myTracksDelete(id: ID): Boolean
   createWallet(name: String, passphrase: String): Wallet
   createWalletFromPubKey(username: String, cardanoPublicKey: String): Wallet
   createUserAuth(publicKey: String, role: String): UserAuth

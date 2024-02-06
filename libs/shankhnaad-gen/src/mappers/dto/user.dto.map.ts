@@ -22,6 +22,14 @@ export class UserDtoMap extends Mapper<User> {
         String,
         data['subscriptionEndDate']
       ),
+      myTracksId: this.scalarArray<string>(String, data['myTracksId']),
+      likedTracksId: this.scalarArray<string>(String, data['likedTracksId']),
+      historyTracksId: this.scalarArray<string>(
+        String,
+        data['historyTracksId']
+      ),
+      rewards: this.scalar<number>(Number, data['rewards']),
+      likes: this.scalar<number>(Number, data['likes']),
     });
     if (userOrError.isSuccess) {
       return userOrError.getValue();
@@ -45,6 +53,11 @@ export class UserDtoMap extends Mapper<User> {
         String,
         user.subscriptionEndDate
       ),
+      myTracksId: this.scalarArray<string>(String, user.myTracksId),
+      likedTracksId: this.scalarArray<string>(String, user.likedTracksId),
+      historyTracksId: this.scalarArray<string>(String, user.historyTracksId),
+      rewards: this.scalar<number>(Number, user.rewards),
+      likes: this.scalar<number>(Number, user.likes),
     };
   }
 }

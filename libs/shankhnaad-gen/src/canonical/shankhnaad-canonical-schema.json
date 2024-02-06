@@ -246,16 +246,45 @@
           "isWriteOnly": false,
           "description": "Subscription End Date",
           "defType": "Scalar"
-        }
-      ]
-    },
-    {
-      "name": "track",
-      "type": "Entity",
-      "isNft": true,
-      "props": [
+        },
         {
-          "name": "key",
+          "name": "myTracksId",
+          "type": "string",
+          "isEnabled": true,
+          "isRequired": false,
+          "isIndexed": false,
+          "isUnique": false,
+          "isPK": false,
+          "isReadOnly": false,
+          "isWriteOnly": false,
+          "defType": "ScalarArray"
+        },
+        {
+          "name": "likedTracksId",
+          "type": "string",
+          "isEnabled": true,
+          "isRequired": false,
+          "isIndexed": false,
+          "isUnique": false,
+          "isPK": false,
+          "isReadOnly": false,
+          "isWriteOnly": false,
+          "defType": "ScalarArray"
+        },
+        {
+          "name": "historyTracksId",
+          "type": "string",
+          "isEnabled": true,
+          "isRequired": false,
+          "isIndexed": false,
+          "isUnique": false,
+          "isPK": false,
+          "isReadOnly": false,
+          "isWriteOnly": false,
+          "defType": "ScalarArray"
+        },
+        {
+          "name": "rewards",
           "type": "number",
           "isEnabled": true,
           "isRequired": false,
@@ -264,9 +293,31 @@
           "isPK": false,
           "isReadOnly": false,
           "isWriteOnly": false,
-          "examples": ["123456789"],
+          "examples": ["0", "1000"],
+          "description": "Reward to be given to the user",
           "defType": "Scalar"
         },
+        {
+          "name": "likes",
+          "type": "number",
+          "isEnabled": true,
+          "isRequired": false,
+          "isIndexed": false,
+          "isUnique": false,
+          "isPK": false,
+          "isReadOnly": false,
+          "isWriteOnly": false,
+          "examples": ["0", "1000"],
+          "description": "number of likes gained by the user in a month",
+          "defType": "Scalar"
+        }
+      ]
+    },
+    {
+      "name": "track",
+      "type": "Entity",
+      "isNft": true,
+      "props": [
         {
           "name": "title",
           "type": "string",
@@ -358,7 +409,7 @@
           "defType": "Scalar"
         },
         {
-          "name": "description",
+          "name": "lyrics",
           "type": "string",
           "isEnabled": true,
           "isRequired": false,
@@ -406,19 +457,6 @@
         },
         {
           "name": "value",
-          "type": "number",
-          "isEnabled": true,
-          "isRequired": false,
-          "isIndexed": false,
-          "isUnique": false,
-          "isPK": false,
-          "isReadOnly": false,
-          "isWriteOnly": false,
-          "examples": ["123456789"],
-          "defType": "Scalar"
-        },
-        {
-          "name": "purchasable",
           "type": "number",
           "isEnabled": true,
           "isRequired": false,
@@ -501,197 +539,6 @@
           "description": "Cardano NFT asset name",
           "examples": ["NFT Asset Name"],
           "defType": "Scalar"
-        }
-      ]
-    },
-    {
-      "name": "reorderprops",
-      "type": "Entity",
-      "isNft": false,
-      "props": [
-        {
-          "name": "list",
-          "type": "track",
-          "isEnabled": true,
-          "isRequired": false,
-          "isIndexed": false,
-          "isUnique": false,
-          "isPK": false,
-          "isReadOnly": false,
-          "isWriteOnly": false,
-          "defType": "EntityArray"
-        },
-        {
-          "name": "startIndex",
-          "type": "number",
-          "isEnabled": true,
-          "isRequired": false,
-          "isIndexed": false,
-          "isUnique": false,
-          "isPK": false,
-          "isReadOnly": false,
-          "isWriteOnly": false,
-          "examples": ["0"],
-          "defType": "Scalar"
-        },
-        {
-          "name": "endIndex",
-          "type": "number",
-          "isEnabled": true,
-          "isRequired": false,
-          "isIndexed": false,
-          "isUnique": false,
-          "isPK": false,
-          "isReadOnly": false,
-          "isWriteOnly": false,
-          "examples": ["123456789"],
-          "defType": "Scalar"
-        }
-      ]
-    },
-    {
-      "name": "album",
-      "type": "Entity",
-      "isNft": false,
-      "props": [
-        {
-          "name": "genre",
-          "type": "Genre",
-          "isEnabled": true,
-          "isRequired": false,
-          "isIndexed": false,
-          "isUnique": false,
-          "isPK": false,
-          "isReadOnly": false,
-          "isWriteOnly": false,
-          "examples": [
-            ["Indie", "Indie"],
-            ["Love", "Love"],
-            ["Ambient", "Ambient"],
-            ["Party", "Party"],
-            ["Devotional", "Devotional"],
-            ["Decades", "Decades"],
-            ["Dance", "Dance"],
-            ["Student", "Student"],
-            ["Chill", "Chill"],
-            ["Workout", "Workout"],
-            ["Rock", "Rock"],
-            ["Sleep", "Sleep"],
-            ["Instrumental", "Instrumental"],
-            ["Jazz", "Jazz"],
-            ["Classical", "Classical"],
-            ["Focus", "Focus"],
-            ["Soul", "Soul"],
-            ["Travel", "Travel"],
-            ["Disco", "Disco"],
-            ["Sad", "Sad"]
-          ],
-          "defType": "Enum"
-        },
-        {
-          "name": "track",
-          "type": "track",
-          "isEnabled": true,
-          "isRequired": false,
-          "isIndexed": false,
-          "isUnique": false,
-          "isPK": false,
-          "isReadOnly": false,
-          "isWriteOnly": false,
-          "defType": "EntityArray"
-        }
-      ]
-    },
-    {
-      "name": "liked_tracks",
-      "type": "Entity",
-      "isNft": false,
-      "props": [
-        {
-          "name": "username",
-          "type": "string",
-          "isEnabled": true,
-          "isRequired": false,
-          "isIndexed": false,
-          "isUnique": false,
-          "isPK": false,
-          "isReadOnly": false,
-          "isWriteOnly": false,
-          "defType": "Scalar"
-        },
-        {
-          "name": "track",
-          "type": "track",
-          "isEnabled": true,
-          "isRequired": false,
-          "isIndexed": false,
-          "isUnique": false,
-          "isPK": false,
-          "isReadOnly": false,
-          "isWriteOnly": false,
-          "defType": "EntityArray"
-        }
-      ]
-    },
-    {
-      "name": "track_history",
-      "type": "Entity",
-      "isNft": false,
-      "props": [
-        {
-          "name": "username",
-          "type": "string",
-          "isEnabled": true,
-          "isRequired": false,
-          "isIndexed": false,
-          "isUnique": false,
-          "isPK": false,
-          "isReadOnly": false,
-          "isWriteOnly": false,
-          "defType": "Scalar"
-        },
-        {
-          "name": "track",
-          "type": "track",
-          "isEnabled": true,
-          "isRequired": false,
-          "isIndexed": false,
-          "isUnique": false,
-          "isPK": false,
-          "isReadOnly": false,
-          "isWriteOnly": false,
-          "defType": "EntityArray"
-        }
-      ]
-    },
-    {
-      "name": "my_tracks",
-      "type": "Entity",
-      "isNft": false,
-      "props": [
-        {
-          "name": "username",
-          "type": "string",
-          "isEnabled": true,
-          "isRequired": false,
-          "isIndexed": false,
-          "isUnique": false,
-          "isPK": false,
-          "isReadOnly": false,
-          "isWriteOnly": false,
-          "defType": "Scalar"
-        },
-        {
-          "name": "track",
-          "type": "track",
-          "isEnabled": true,
-          "isRequired": false,
-          "isIndexed": false,
-          "isUnique": false,
-          "isPK": false,
-          "isReadOnly": false,
-          "isWriteOnly": false,
-          "defType": "EntityArray"
         }
       ]
     },

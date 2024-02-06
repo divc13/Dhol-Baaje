@@ -1,11 +1,30 @@
 import Head from "next/head";
 import { useRecoilValue } from "recoil";
-import { recentlyPlayedTracks } from "../atoms/playerAtom";
 import RecentlyPlayed from "../components/RecentlyPlayed";
 import { Track } from "../types/body.types";
+import PrivateRoute from "../PrivateRoute";
+import { LiveUser } from "../atoms/playerAtom";
+import { useQuery } from "@apollo/client";
+import { GET_SONGS_BY_IDS } from "../graphql/query";
+import { useEffect, useState } from "react";
 
-export default function History() {
-  const recentlyPlayed = useRecoilValue<Track[]>(recentlyPlayedTracks);
+function History() {
+  const liveUser = useRecoilValue(LiveUser);
+  const [recentlyPlayed, setRecentTracks] = useState<Track[]>([]);
+  
+  if(liveUser) {
+    const { data } = useQuery(GET_SONGS_BY_IDS, {
+      variables: {
+          idList: liveUser.historyTracksId,
+      }
+    });
+    useEffect(() => {
+      if (data) {
+        const userrecenttracks = data.trackFindManyById ? data.trackFindManyById : [];
+        setRecentTracks(userrecenttracks);
+      }
+    }, [data]);
+  }
 
   return (
     <>
@@ -20,9 +39,8 @@ export default function History() {
           <div>
 
             <div className="border-2 border-[#262626] rounded-2xl overflow-y-scroll w-full h-full max-h-[78vh] scrollbarThin">
-              {[...recentlyPlayed].reverse().map((track, i) => (
+              {recentlyPlayed.map((track, i) => (
                 <RecentlyPlayed
-                  key={i}
                   track={track}
                   playlist={recentlyPlayed}
                   button={true}
@@ -41,3 +59,5 @@ export default function History() {
     </>
   );
 }
+
+export default PrivateRoute(History);

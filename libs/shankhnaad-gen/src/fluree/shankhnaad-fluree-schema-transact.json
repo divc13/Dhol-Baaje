@@ -209,6 +209,46 @@
     "type": "string"
   },
   {
+    "_id": "_predicate",
+    "name": "user/myTracksId",
+    "index": false,
+    "unique": false,
+    "type": "string",
+    "multi": true
+  },
+  {
+    "_id": "_predicate",
+    "name": "user/likedTracksId",
+    "index": false,
+    "unique": false,
+    "type": "string",
+    "multi": true
+  },
+  {
+    "_id": "_predicate",
+    "name": "user/historyTracksId",
+    "index": false,
+    "unique": false,
+    "type": "string",
+    "multi": true
+  },
+  {
+    "_id": "_predicate",
+    "name": "user/rewards",
+    "doc": "Reward to be given to the user",
+    "index": false,
+    "unique": false,
+    "type": "bigint"
+  },
+  {
+    "_id": "_predicate",
+    "name": "user/likes",
+    "doc": "number of likes gained by the user in a month",
+    "index": false,
+    "unique": false,
+    "type": "bigint"
+  },
+  {
     "_id": "_collection",
     "name": "track"
   },
@@ -233,13 +273,6 @@
     "type": "instant",
     "doc": "track last update time",
     "index": true
-  },
-  {
-    "_id": "_predicate",
-    "name": "track/key",
-    "index": false,
-    "unique": false,
-    "type": "bigint"
   },
   {
     "_id": "_predicate",
@@ -292,7 +325,7 @@
   },
   {
     "_id": "_predicate",
-    "name": "track/description",
+    "name": "track/lyrics",
     "index": false,
     "unique": false,
     "type": "string"
@@ -395,13 +428,6 @@
   },
   {
     "_id": "_predicate",
-    "name": "track/purchasable",
-    "index": false,
-    "unique": false,
-    "type": "bigint"
-  },
-  {
-    "_id": "_predicate",
     "name": "track/nftIpfsCid",
     "doc": "CID from IPFS",
     "index": true,
@@ -439,304 +465,6 @@
     "index": true,
     "unique": false,
     "type": "string"
-  },
-  {
-    "_id": "_collection",
-    "name": "reorderprops"
-  },
-  {
-    "_id": "_predicate",
-    "name": "reorderprops/identifier",
-    "type": "string",
-    "doc": "reorderprops unique identifier",
-    "index": true,
-    "unique": true
-  },
-  {
-    "_id": "_predicate",
-    "name": "reorderprops/createdAt",
-    "type": "instant",
-    "doc": "reorderprops creation time",
-    "index": true
-  },
-  {
-    "_id": "_predicate",
-    "name": "reorderprops/updatedAt",
-    "type": "instant",
-    "doc": "reorderprops last update time",
-    "index": true
-  },
-  {
-    "_id": "_predicate",
-    "name": "reorderprops/list",
-    "index": false,
-    "unique": false,
-    "type": "ref",
-    "restrictCollection": "track",
-    "multi": true
-  },
-  {
-    "_id": "_predicate",
-    "name": "reorderprops/startIndex",
-    "index": false,
-    "unique": false,
-    "type": "bigint"
-  },
-  {
-    "_id": "_predicate",
-    "name": "reorderprops/endIndex",
-    "index": false,
-    "unique": false,
-    "type": "bigint"
-  },
-  {
-    "_id": "_collection",
-    "name": "album"
-  },
-  {
-    "_id": "_predicate",
-    "name": "album/identifier",
-    "type": "string",
-    "doc": "album unique identifier",
-    "index": true,
-    "unique": true
-  },
-  {
-    "_id": "_predicate",
-    "name": "album/createdAt",
-    "type": "instant",
-    "doc": "album creation time",
-    "index": true
-  },
-  {
-    "_id": "_predicate",
-    "name": "album/updatedAt",
-    "type": "instant",
-    "doc": "album last update time",
-    "index": true
-  },
-  {
-    "_id": "_tag",
-    "id": "album/genre:Indie"
-  },
-  {
-    "_id": "_tag",
-    "id": "album/genre:Love"
-  },
-  {
-    "_id": "_tag",
-    "id": "album/genre:Ambient"
-  },
-  {
-    "_id": "_tag",
-    "id": "album/genre:Party"
-  },
-  {
-    "_id": "_tag",
-    "id": "album/genre:Devotional"
-  },
-  {
-    "_id": "_tag",
-    "id": "album/genre:Decades"
-  },
-  {
-    "_id": "_tag",
-    "id": "album/genre:Dance"
-  },
-  {
-    "_id": "_tag",
-    "id": "album/genre:Student"
-  },
-  {
-    "_id": "_tag",
-    "id": "album/genre:Chill"
-  },
-  {
-    "_id": "_tag",
-    "id": "album/genre:Workout"
-  },
-  {
-    "_id": "_tag",
-    "id": "album/genre:Rock"
-  },
-  {
-    "_id": "_tag",
-    "id": "album/genre:Sleep"
-  },
-  {
-    "_id": "_tag",
-    "id": "album/genre:Instrumental"
-  },
-  {
-    "_id": "_tag",
-    "id": "album/genre:Jazz"
-  },
-  {
-    "_id": "_tag",
-    "id": "album/genre:Classical"
-  },
-  {
-    "_id": "_tag",
-    "id": "album/genre:Focus"
-  },
-  {
-    "_id": "_tag",
-    "id": "album/genre:Soul"
-  },
-  {
-    "_id": "_tag",
-    "id": "album/genre:Travel"
-  },
-  {
-    "_id": "_tag",
-    "id": "album/genre:Disco"
-  },
-  {
-    "_id": "_tag",
-    "id": "album/genre:Sad"
-  },
-  {
-    "_id": "_predicate",
-    "name": "album/genre",
-    "index": false,
-    "unique": false,
-    "type": "tag",
-    "restrictTag": true
-  },
-  {
-    "_id": "_predicate",
-    "name": "album/track",
-    "index": false,
-    "unique": false,
-    "type": "ref",
-    "restrictCollection": "track",
-    "multi": true
-  },
-  {
-    "_id": "_collection",
-    "name": "liked_tracks"
-  },
-  {
-    "_id": "_predicate",
-    "name": "liked_tracks/identifier",
-    "type": "string",
-    "doc": "liked_tracks unique identifier",
-    "index": true,
-    "unique": true
-  },
-  {
-    "_id": "_predicate",
-    "name": "liked_tracks/createdAt",
-    "type": "instant",
-    "doc": "liked_tracks creation time",
-    "index": true
-  },
-  {
-    "_id": "_predicate",
-    "name": "liked_tracks/updatedAt",
-    "type": "instant",
-    "doc": "liked_tracks last update time",
-    "index": true
-  },
-  {
-    "_id": "_predicate",
-    "name": "liked_tracks/username",
-    "index": false,
-    "unique": false,
-    "type": "string"
-  },
-  {
-    "_id": "_predicate",
-    "name": "liked_tracks/track",
-    "index": false,
-    "unique": false,
-    "type": "ref",
-    "restrictCollection": "track",
-    "multi": true
-  },
-  {
-    "_id": "_collection",
-    "name": "track_history"
-  },
-  {
-    "_id": "_predicate",
-    "name": "track_history/identifier",
-    "type": "string",
-    "doc": "track_history unique identifier",
-    "index": true,
-    "unique": true
-  },
-  {
-    "_id": "_predicate",
-    "name": "track_history/createdAt",
-    "type": "instant",
-    "doc": "track_history creation time",
-    "index": true
-  },
-  {
-    "_id": "_predicate",
-    "name": "track_history/updatedAt",
-    "type": "instant",
-    "doc": "track_history last update time",
-    "index": true
-  },
-  {
-    "_id": "_predicate",
-    "name": "track_history/username",
-    "index": false,
-    "unique": false,
-    "type": "string"
-  },
-  {
-    "_id": "_predicate",
-    "name": "track_history/track",
-    "index": false,
-    "unique": false,
-    "type": "ref",
-    "restrictCollection": "track",
-    "multi": true
-  },
-  {
-    "_id": "_collection",
-    "name": "my_tracks"
-  },
-  {
-    "_id": "_predicate",
-    "name": "my_tracks/identifier",
-    "type": "string",
-    "doc": "my_tracks unique identifier",
-    "index": true,
-    "unique": true
-  },
-  {
-    "_id": "_predicate",
-    "name": "my_tracks/createdAt",
-    "type": "instant",
-    "doc": "my_tracks creation time",
-    "index": true
-  },
-  {
-    "_id": "_predicate",
-    "name": "my_tracks/updatedAt",
-    "type": "instant",
-    "doc": "my_tracks last update time",
-    "index": true
-  },
-  {
-    "_id": "_predicate",
-    "name": "my_tracks/username",
-    "index": false,
-    "unique": false,
-    "type": "string"
-  },
-  {
-    "_id": "_predicate",
-    "name": "my_tracks/track",
-    "index": false,
-    "unique": false,
-    "type": "ref",
-    "restrictCollection": "track",
-    "multi": true
   },
   {
     "_id": "_collection",

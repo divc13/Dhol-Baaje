@@ -12,4 +12,4 @@ RUN apk update && \
     apk add -q -f dumb-init && \
     rm -rf /var/cache/apk/*
 
-CMD npm run dev
+CMD pnpm run dev

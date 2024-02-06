@@ -1,4 +1,5 @@
 const { Seed, WalletServer } = require('cardano-wallet-js');
+
 async function getNetworkInformation() {
   try {
     let walletServer = WalletServer.init('http://localhost:7070/v2');

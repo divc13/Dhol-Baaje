@@ -2,8 +2,3 @@ export * from './wallet-asset.fluree.repo';
 export * from './wallet.fluree.repo';
 export * from './user.fluree.repo';
 export * from './track.fluree.repo';
-export * from './reorderprops.fluree.repo';
-export * from './album.fluree.repo';
-export * from './liked-tracks.fluree.repo';
-export * from './track-history.fluree.repo';
-export * from './my-tracks.fluree.repo';

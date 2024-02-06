@@ -15,7 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@db/shankhnaad-gen": ["libs/shankhnaad-gen/src/index.ts"]
+      "@dhol-baaje/shankhnaad-gen": ["libs/shankhnaad-gen/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

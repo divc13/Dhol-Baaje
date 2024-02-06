@@ -1,14 +1,15 @@
 import { AiFillHeart } from "react-icons/ai";
 import { useRouter } from 'next/router';
 import { useWallet } from "@meshsdk/react";
-import PrivateRoute from "../../PrivateRoute";
+import { Track } from "../../types/body.types";
 
 interface HeartProps {
   hasLiked: boolean;
-  handleLike: () => void;
+  handleLike: (track: Track) => void;
+  track: Track;
 }
 
-const Heart = ({ hasLiked, handleLike }: HeartProps) => {
+const Heart = ({ hasLiked, handleLike, track }: HeartProps) => {
   const router = useRouter();
   const { connected } = useWallet();
   
@@ -18,7 +19,7 @@ const Heart = ({ hasLiked, handleLike }: HeartProps) => {
       router.push('/login');
     }
     else{
-      handleLike()
+      handleLike(track);
     }
   }
   return (

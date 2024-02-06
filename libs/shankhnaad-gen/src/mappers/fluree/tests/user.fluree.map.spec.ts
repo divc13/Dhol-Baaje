@@ -47,6 +47,11 @@ describe('User Fluree Map', () => {
         ],
       },
       'user/subscriptionEndDate': 'abcdefg',
+      'user/myTracksId': ['abcdefg'],
+      'user/likedTracksId': ['abcdefg'],
+      'user/historyTracksId': ['abcdefg'],
+      'user/rewards': 1,
+      'user/likes': 1,
     };
     mapper = new UserFlureeMap();
   });
@@ -61,6 +66,11 @@ describe('User Fluree Map', () => {
     expect(user.updatedAt instanceof Date).toBeTruthy();
     expect(user.username).toBe('babingo_whoelse@gmail.com');
     expect(user.subscriptionEndDate).toBe('abcdefg');
+    expect(user.myTracksId).toStrictEqual(['abcdefg']);
+    expect(user.likedTracksId).toStrictEqual(['abcdefg']);
+    expect(user.historyTracksId).toStrictEqual(['abcdefg']);
+    expect(user.rewards).toBe(1);
+    expect(user.likes).toBe(1);
   });
 
   it('should serialize User to Fluree data', () => {

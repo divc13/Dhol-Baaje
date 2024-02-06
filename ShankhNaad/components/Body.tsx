@@ -14,6 +14,7 @@ const Body = () => {
   const [musicData, setMusicData] = useState<TrackType[]>([]);
   const [showHomePlaylist, setShowHomePlaylist] = useState<TrackType[]>([]);
   const { loading, error, data } = useQuery(GET_ALL_SONGS);
+  
 
   useEffect(() => {
     if (!loading && !error && data) {

@@ -8,4 +8,9 @@ export class UserDto {
   username?: string;
   wallet?: WalletDto;
   subscriptionEndDate?: string;
+  myTracksId?: string[];
+  likedTracksId?: string[];
+  historyTracksId?: string[];
+  rewards?: number;
+  likes?: number;
 }

@@ -1,15 +1,14 @@
 import { createContext, ReactNode } from "react";
 import { DropResult } from "react-beautiful-dnd";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import {
   currentPlaylistState,
+  LiveUser,
   playingTrackState,
   playState,
-  recentlyPlayedTracks,
 } from "../atoms/playerAtom";
 import { Track } from "../types/body.types";
-import recentPlayedCache from "../utils/cache";
-import { DELETE_TRACK, SAVE_TRACK } from "../graphql/mutation"
+import { SAVE_TRACK, LIKE_TRACK } from "../graphql/mutation"
 import { useMutation } from '@apollo/client';
 
 type chooseTrack = (track: Track, playlist: Track[]) => void;
@@ -31,27 +30,46 @@ export const TrackProvider = ({ children }: { children: ReactNode }) => {
 
   
   const [play, setPlay] = useRecoilState(playState);
+  const [liveUser, setliveUser] = useRecoilState(LiveUser);
   const [currentPlaylist, setCurrentPlaylist] = useRecoilState(currentPlaylistState);
-  const setRecentlyPlayed = useSetRecoilState(recentlyPlayedTracks);
-  const setPlayingTrack = useSetRecoilState(playingTrackState);
+  const [playingTrack, setPlayingTrack] = useRecoilState(playingTrackState);
   const [Save_Track] = useMutation(SAVE_TRACK);
-  const [Delete_Track] = useMutation(DELETE_TRACK);
+  const [Like_Track] = useMutation(LIKE_TRACK);
 
 
   const chooseTrack: chooseTrack = (track, playlist) => {
     setCurrentPlaylist(playlist);
-    const cachedData = recentPlayedCache(track?.id, track);
-    setRecentlyPlayed([...cachedData]);
-    setPlayingTrack(track);
+    if(!playingTrack || playingTrack.id !== track.id){
       Save_Track({
-      variables: {
+        variables: {
           track: {
-            id: 1234567,
-            subjectId: track.subjectId,
+            id: track.id,
             n_listens: track.n_listens + 1,
+            album: track.album,
+            createdAt: track.createdAt,
           }
-      }
-  });
+        }
+      });
+      const newList = liveUser.historyTracksId ? liveUser.historyTracksId.filter((el: String) => el !== track.id) : [];
+      const newHistory = liveUser.historyTracksId ? [track.id, ...newList] : [track.id];
+      setliveUser({
+        ...liveUser,
+        historyTracksId: newHistory,
+      });
+      Like_Track({
+        variables: {
+          user: {
+            id: liveUser.id,
+            myTracksId: liveUser.myTracksId,
+            likedTracksId: liveUser.likedTracksId,
+            historyTracksId: newHistory,
+            createdAt: liveUser.createdAt,
+            updatedAt: liveUser.updatedAt,
+          }
+        }
+      });
+    }
+    setPlayingTrack(track);
     if (!play) setPlay(!play);
   };
 

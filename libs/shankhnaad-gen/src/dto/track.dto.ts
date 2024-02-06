@@ -5,7 +5,6 @@ export class TrackDto {
   subjectId?: string;
   createdAt?: string;
   updatedAt?: string;
-  key?: number;
   title?: string;
   subtitle?: string;
   username?: string;
@@ -13,10 +12,9 @@ export class TrackDto {
   image?: string;
   likes?: number;
   n_listens?: number;
-  description?: string;
+  lyrics?: string;
   album?: Genre[];
   value?: number;
-  purchasable?: number;
   nftIpfsCid?: string;
   nftCardanoTxId?: string;
   nftName?: string;

@@ -13,7 +13,6 @@ describe('Track Fluree Map', () => {
         '34b9142664b55f552ea66c8189ab481382d14385c126fee99a997b69e6b3824a',
       'track/createdAt': 1657773127808,
       'track/updatedAt': 1657773127808,
-      'track/key': 1,
       'track/title': 'Song name',
       'track/subtitle': 'Some name',
       'track/username': 'abcdefg',
@@ -21,10 +20,9 @@ describe('Track Fluree Map', () => {
       'track/image': '123456789',
       'track/likes': 1,
       'track/n_listens': 1,
-      'track/description': 'a great song!!!',
+      'track/lyrics': 'a great song!!!',
       'track/album': ['Indie'],
       'track/value': 1,
-      'track/purchasable': 1,
       'track/nftIpfsCid': 'QmPrhyaEVcavi3XuP7WHBcD2n8xcUK6mGcF1u6AchXYbgn',
       'track/nftCardanoTxId':
         '664274fa17646981774ac9a5ab5f79d4229788ee5d78bb6e3af351f9b25e2ac3',
@@ -43,7 +41,6 @@ describe('Track Fluree Map', () => {
     expect(track.subjectId).toBe('369435906932826');
     expect(track.createdAt instanceof Date).toBeTruthy();
     expect(track.updatedAt instanceof Date).toBeTruthy();
-    expect(track.key).toBe(1);
     expect(track.title).toBe('Song name');
     expect(track.subtitle).toBe('Some name');
     expect(track.username).toBe('abcdefg');
@@ -51,10 +48,9 @@ describe('Track Fluree Map', () => {
     expect(track.image).toBe('123456789');
     expect(track.likes).toBe(1);
     expect(track.n_listens).toBe(1);
-    expect(track.description).toBe('a great song!!!');
+    expect(track.lyrics).toBe('a great song!!!');
     expect(track.album).toStrictEqual([Genre.Indie]);
     expect(track.value).toBe(1);
-    expect(track.purchasable).toBe(1);
     expect(track.nftIpfsCid).toBe(
       'QmPrhyaEVcavi3XuP7WHBcD2n8xcUK6mGcF1u6AchXYbgn'
     );

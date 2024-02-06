@@ -24,6 +24,23 @@ export class UserFlureeMap extends Mapper<User> {
         String,
         data['user/subscriptionEndDate'] || data.subscriptionEndDate
       ),
+      myTracksId: this.scalarArray<string>(
+        String,
+        data['user/myTracksId'] || data.myTracksId
+      ),
+      likedTracksId: this.scalarArray<string>(
+        String,
+        data['user/likedTracksId'] || data.likedTracksId
+      ),
+      historyTracksId: this.scalarArray<string>(
+        String,
+        data['user/historyTracksId'] || data.historyTracksId
+      ),
+      rewards: this.scalar<number>(
+        Number,
+        data['user/rewards'] || data.rewards
+      ),
+      likes: this.scalar<number>(Number, data['user/likes'] || data.likes),
     });
     if (userOrError.isSuccess) {
       return userOrError.getValue();
@@ -47,6 +64,17 @@ export class UserFlureeMap extends Mapper<User> {
         String,
         user.subscriptionEndDate
       ),
+      'user/myTracksId': this.scalarArray<string>(String, user.myTracksId),
+      'user/likedTracksId': this.scalarArray<string>(
+        String,
+        user.likedTracksId
+      ),
+      'user/historyTracksId': this.scalarArray<string>(
+        String,
+        user.historyTracksId
+      ),
+      'user/rewards': this.scalar<number>(Number, user.rewards),
+      'user/likes': this.scalar<number>(Number, user.likes),
     };
   }
 }

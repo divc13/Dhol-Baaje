@@ -1,21 +1,85 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import { LiveUser } from "../atoms/playerAtom";
 import { useRouter } from 'next/router';
+import { useWallet } from '@meshsdk/react';
+import { SAVE_USER, SUBMIT_TRANSACTION } from '../graphql/mutation';
+import { useMutation, useQuery } from '@apollo/client';
+import { GET_TRANSFER_CBOR } from '../graphql/query';
 
-function Subscription () {
+const Subscription = () => {
+  const router = useRouter();
+  const referer = router.query.referer ? router.query.referer as string : "/";
   const liveUser = useRecoilValue(LiveUser);
   const currentDate = new Date();
-  const router = useRouter();
-  const referer = router.query.referer as string | "/";
+  const [cbor, setCbor] = useState('');
 
-  if (!liveUser || (liveUser.subscriptionEndDate && (new Date(liveUser.subscriptionEndDate) > currentDate))) {
-    router.push(referer);
+  if ( typeof window !== 'undefined' && (!liveUser || (liveUser.subscriptionEndDate && (new Date(liveUser.subscriptionEndDate) > currentDate)))) {
+    router.push({
+      pathname: referer,
+    });
   }
+  console.log(liveUser);
 
-  const handleSubscription = () => {
+    const { data } = useQuery(GET_TRANSFER_CBOR,{
+      variables: {
+        transfer: {
+          walletAddress: liveUser?.wallet.address,
+          recipients: {
+            walletAddress: process.env.CARDANO_WALLET_ADDRESS,
+            asset: {
+              name: "lovelace",
+              amount: 10000000
+            }
+          }
+        }
+      }
+    });
+    
+    useEffect(() => {
+      if (data && data.transferCbor) {
+        setCbor(data.transferCbor);
+      }
+    }, [data]);
 
+  const [submit] = useMutation(SUBMIT_TRANSACTION);
+  const [Save_User] = useMutation(SAVE_USER);
+  const oneMonthLater = new Date();
+  oneMonthLater.setMonth(currentDate.getMonth() + 1);
+  const dateStr = oneMonthLater.toISOString();
+
+  const { wallet } = useWallet();
+  
+  const handleSubscription = async (e: any) => {
+    e.preventDefault();
+
+    const signedTx = await wallet.signTx(cbor);
+    
+    submit({
+      variables: {
+        cbor: signedTx,
+      }
+    });
+
+    Save_User({
+      variables: {
+        user: {
+          id: liveUser.id,
+          myTracksId: liveUser.myTracksId,
+          likedTracksId: liveUser.likedTracksId,
+          historyTracksId: liveUser.historyTracksId,
+          subscriptionEndDate: dateStr,
+          updatedAt: liveUser.updatedAt,
+          createdAt: liveUser.createdAt,
+        },
+      },
+    });
+
+    router.push({
+      pathname: referer
+    });
+    
   }
   
   return (
@@ -31,7 +95,7 @@ function Subscription () {
             draggable="false"
           />
           <button onClick={handleSubscription} className="border border-white transparent rounded hover:bg-red-500 mt-4 p-2 py-3 hover:text-red">
-            Subscribe Now : Only 25 Ada a month!!
+            Subscribe Now : Only 100 Ada a month!!
           </button>
         </div>
       </form>

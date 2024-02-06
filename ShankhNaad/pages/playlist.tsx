@@ -3,29 +3,31 @@ import { Track as TrackType } from "../types/body.types";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import Track from "../components/Track";
-import { GET_LIKED_TRACK } from "../graphql/query";
+import { GET_SONGS_BY_IDS } from "../graphql/query";
 import { useQuery } from '@apollo/client';
 import { LiveUser } from "../atoms/playerAtom";
+import PrivateRoute from "../PrivateRoute";
 
 
 const Playlist = () => {
 
-  const { loading, error, data } = useQuery(GET_LIKED_TRACK);  
   const liveUser = useRecoilValue(LiveUser);
   const [likedTracks, setLikedTracks] = useState<Track[]>([]);
 
-  useEffect(() => {
-    if (!loading && !error && data) {
-      const userlikedtracks = data.likedTracksFindAll ? data.likedTracksFindAll : [];
+  if(liveUser) {
+    const { data } = useQuery(GET_SONGS_BY_IDS, {
+      variables: {
+          idList: liveUser.likedTracksId,
+      }
+    });
 
-      const filteredTracks = userlikedtracks
-        .filter((track) => track.user.username === liveUser.username)
-        .map((track) => track.tracks)
-        ;
-      setLikedTracks(filteredTracks[0]);
-    }
-
-  }, [loading, error, data]);
+    useEffect(() => {
+      if (data) {
+        const userlikedtracks = data.trackFindManyById ? data.trackFindManyById : [];
+        setLikedTracks(userlikedtracks);
+      }
+    }, [data]);
+  }
 
   return (
     <div className="md:w-[calc(100vw-120px)] w-full">
@@ -43,8 +45,8 @@ const Playlist = () => {
 
               <div className="mt-10 overflow-y-scroll scrollbarThin ">
                 <div className="flex flex-col gap-3 p-1 h-[78vh] min-w-max border-2 border-[#262626] rounded-2xl overflow-y-scroll scrollbarThin">
-                  {likedTracks.map((track: TrackType, i: number) => (
-                    <Track track={track} key={i} playlist={likedTracks} />
+                  {likedTracks.map((track: TrackType) => (
+                    <Track track={track} playlist={likedTracks} />
                   ))}
                 </div>
               </div>
@@ -62,4 +64,4 @@ const Playlist = () => {
   );
 };
 
-export default Playlist;
+export default PrivateRoute(Playlist);

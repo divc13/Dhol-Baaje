@@ -61,6 +61,11 @@ const signup = () => {
             wallet: {
               address: addr,
             },
+            myTracksId: [],
+            likedTracksId: [],
+            historyTracksId: [],
+            rewards: 0,
+            likes: 0,
             subscriptionEndDate: dateStr,
           },
         },
@@ -68,12 +73,18 @@ const signup = () => {
         const userId = response.data.userSave.id;
         console.log(userId);
         setActiveUser({
-          id: userId,
+          id: username,
           username: username,
           wallet: {
             address: addr,
           },
+          myTracksId: [],
+          likedTracksId: [],
+          historyTracksId: [],
           subscriptionEndDate: dateStr,
+          rewards: 0,
+          createdAt: response.data.userSave.createdAt,
+          updatedAt: response.data.userSave.updatedAt,
         });
         setValidity('User Logged In');
       })
@@ -147,6 +158,9 @@ const signup = () => {
                 <div className="flex flex:row py-2">
                   Username <p className="text-green-500 px-2">{username}</p> is
                   available!!
+                </div>
+                <div className="flex flex:row py-2">
+                  You will be subscribed for a free 7 day trial.
                 </div>
                 <CardanoWallet
                   label="Sign In with Cardano"

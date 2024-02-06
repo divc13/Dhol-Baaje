@@ -2,8 +2,3 @@ export * from './wallet-asset.entity';
 export * from './wallet.entity';
 export * from './user.entity';
 export * from './track.entity';
-export * from './reorderprops.entity';
-export * from './album.entity';
-export * from './liked-tracks.entity';
-export * from './track-history.entity';
-export * from './my-tracks.entity';

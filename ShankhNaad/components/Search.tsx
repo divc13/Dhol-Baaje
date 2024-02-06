@@ -5,6 +5,7 @@ import { useWallet } from "@meshsdk/react";
 import { LogoutIcon } from "@heroicons/react/outline";
 import { LiveUser } from "../atoms/playerAtom";
 import { useRecoilState } from "recoil";
+import { Router, useRouter } from "next/router";
 
 type SearchProps = {
   search: string;
@@ -21,9 +22,9 @@ function Search({ search, setSearch, searchQuery}: SearchProps) {
 
   const [activeUser, setActiveUser] = useRecoilState(LiveUser);
 
+  const router = useRouter();
   const handleLogOut = () => {
-    setActiveUser(undefined);
-    disconnect();
+    router.reload();
   }
 
   return (
@@ -42,7 +43,7 @@ function Search({ search, setSearch, searchQuery}: SearchProps) {
           />
         </form>
       </div>
-      {connected ? (
+      {activeUser ? (
         <div  className="flex gap-2">
           <Link href="/profile" className="flex">
             <button className="bg-white/10 flex items-center border-2 border-[#262626] rounded-full h-12 py-3 px-2 text-sm">

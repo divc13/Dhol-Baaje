@@ -16,11 +16,6 @@ export const currentPlaylistState = atom<Track[]>({
   default: undefined,
 });
 
-export const recentlyPlayedTracks = atom<Track[]>({
-  key: "4",
-  default: [],
-});
-
 export const LiveUser = atom<User>({
   key: "5",
   default: undefined,

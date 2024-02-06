@@ -7,8 +7,9 @@ import { useContext, useState, useEffect } from "react";
 import Heart from "./track/Heart";
 import { useMutation, useQuery } from '@apollo/client';
 import { LiveUser } from "../atoms/playerAtom";
-import { GET_LIKED_TRACK } from "../graphql/query";
-import { DELETE_TRACK, SAVE_TRACK, LIKE_TRACK } from "../graphql/mutation"
+import { SAVE_TRACK, LIKE_TRACK } from "../graphql/mutation"
+import { useRouter } from "next/router";
+import { GET_USER } from "../graphql/query";
 
 interface PosterProps {
     track : Track
@@ -20,84 +21,162 @@ function Poster({ track, playlist }: PosterProps) {
   const [play, setPlay] = useRecoilState<boolean>(playState);
   const playingTrack = useRecoilValue<Track>(playingTrackState);
   const {chooseTrack} = useContext(TrackContext)
-
-  const [likedTracks, setLikedTracks] = useState<Track[]>([]);
-  const { loading, error, data } = useQuery(GET_LIKED_TRACK);
-  const liveUser = useRecoilValue(LiveUser);
+  const [liveUser, setliveUser] = useRecoilState(LiveUser);
   const [Save_Track] = useMutation(SAVE_TRACK);
   const [Like_Track] = useMutation(LIKE_TRACK);
-  const [Delete_Track] = useMutation(DELETE_TRACK);
-
-
-  useEffect(() => {
-    if (!loading && !error && data) {
-      const userlikedtracks = data.likedTracksFindAll ? data.likedTracksFindAll : [];
-
-      const filteredTracks = userlikedtracks
-        .filter((track) => track.user.username === liveUser.username)
-        .map((track) => track.tracks)
-        ;
-      setLikedTracks(filteredTracks[0]);
+  const router = useRouter();
+  const { data } = useQuery(GET_USER, {
+    variables: {
+        username: track.username,
     }
+  });
 
-  }, [loading, error, data]);
+  console.log(data);
 
-  const index = likedTracks?.findIndex(
-    (tracks: Track) => tracks.id === track.id
-  );
-
-  useEffect(() => {
-    let liked = index !== -1 ? true : false;
-    setHasLiked(liked);
-  }, [index]);
+  if(liveUser && liveUser.likedTracksId) {
+    const index = liveUser.likedTracksId.findIndex(
+      (el: String) => el === track.id
+    );
+    useEffect(() => {
+      let liked = index !== -1 ? true : false;
+      setHasLiked(liked);
+    }, [index]);
+  }
 
   const handlePlay = () => {
-    chooseTrack(track, playlist);
-    if(!playingTrack){
-        setPlay(!play)
+    if(!liveUser) {
+      router.push({
+        pathname: '/login',
+      });
     }
+    else {
+      chooseTrack(track, playlist);
+      if (!playingTrack) {
+        setPlay(!play);
+      }
 
-    if (track.id === playingTrack?.id) {
-      setPlay(!play);
+      if (track.id === playingTrack?.id) {
+        setPlay(!play);
+      }
     }
   };
 
-  function handleLike() {
-    if (index == -1) {
-      setLikedTracks([...likedTracks, track]);
-      Save_Track({
-        variables: {
-          track: {
-            id: track.id,
-            likes: track.likes + 1,
-          }
-        }
-      });
-      Like_Track({
-        variables:{
-          tracks: likedTracks,
-          user: liveUser
-        }
-      })
 
-    } 
-    else {
-      Save_Track({
-        variables: {
-          track: {
-            id: track.id,
-            likes: track.likes - 1,
-          }
-        }
+  function handleLike(track: Track) {
+    if(!liveUser) {
+      router.push({
+        pathname: '/login',
       });
-      const newAraay = likedTracks.filter((el: Track) => el.id !== track.id);
-      setLikedTracks(newAraay);
-      Like_Track({
-        variables:{
-          tracks: likedTracks,
-          user: liveUser
+    }
+    else {
+      if (hasLiked == false || liveUser.likedTracksId.length === 0) {
+        setliveUser({
+          ...liveUser,
+          likedTracksId: liveUser.likedTracksId !== null ? [...liveUser.likedTracksId, track.id] : [track.id],
+        });
+        Save_Track({
+          variables: {
+            track: {
+              id: track.id,
+              likes: track.likes + 1,
+              album: track.album,
+              createdAt: track.createdAt,
+            }
+          }
+        });
+        Like_Track({
+          variables: {
+            user: {
+              id: liveUser.id,
+              myTracksId: liveUser.myTracksId,
+              likedTracksId: liveUser.likedTracksId !== null ? [...liveUser.likedTracksId, track.id] : [track.id],
+              historyTracksId: liveUser.historyTracksId,
+              createdAt: liveUser.createdAt,
+              updatedAt: liveUser.updatedAt,
+            }
+          }
+        });
+        Like_Track({
+          variables: {
+            user: {
+              id: data.userFindOneByUsername.id,
+              myTracksId: data.userFindOneByUsername.myTracksId,
+              likedTracksId: data.userFindOneByUsername.likedTracksId,
+              historyTracksId: data.userFindOneByUsername.historyTracksId,
+              likes: data.userFindOneByUsername.likes + 1,
+              createdAt: data.userFindOneByUsername.createdAt,
+              updatedAt: data.userFindOneByUsername.updatedAt,
+            }
+          }
+        });
+      } 
+      else {
+        Save_Track({
+            variables: {
+              track: {
+                id: track.id,
+                likes: track.likes - 1,
+                album: track.album,
+                createdAt: track.createdAt,
+              }
+            }
+          });
+        const newLiked = liveUser.likedTracksId.filter((el: String) => el !== track.id);
+        setliveUser({
+          ...liveUser,
+          likedTracksId: newLiked,
+        });
+        Like_Track({
+          variables: {
+            user: {
+              id: liveUser.id,
+              myTracksId: liveUser.myTracksId,
+              likedTracksId: newLiked,
+              historyTracksId: liveUser.historyTracksId,
+              createdAt: liveUser.createdAt,
+              updatedAt: liveUser.updatedAt,
+            }
+          }
+        });
+        Like_Track({
+          variables: {
+            user: {
+              id: data.userFindOneByUsername.id,
+              myTracksId: data.userFindOneByUsername.myTracksId,
+              likedTracksId: data.userFindOneByUsername.likedTracksId,
+              historyTracksId: data.userFindOneByUsername.historyTracksId,
+              likes: data.userFindOneByUsername.likes - 1,
+              createdAt: data.userFindOneByUsername.createdAt,
+              updatedAt: data.userFindOneByUsername.updatedAt,
+            }
+          }
+        });
+      }
+
+      const mapLikesToRewards = (likes) => {
+        if(likes < 0) {
+          return 0;
         }
-      })
+        return 150 * likes/(1000000 + likes);
+      };
+
+      const monthBefore = new Date();
+      monthBefore.setDate(monthBefore.getMonth() - 1);
+      if(new Date(data.userFindOneByUsername.updatedAt) < monthBefore) {
+        Like_Track({
+          variables: {
+            user: {
+              id: data.userFindOneByUsername.id,
+              myTracksId: data.userFindOneByUsername.myTracksId,
+              likedTracksId: data.userFindOneByUsername.likedTracksId,
+              historyTracksId: data.userFindOneByUsername.historyTracksId,
+              createdAt: data.userFindOneByUsername.createdAt,
+              rewards: data.userFindOneByUsername.rewards + mapLikesToRewards(data.userFindOneByUsername.likes),
+              likes: 0,
+            }
+          }
+        });
+      }
     }
   }
 
@@ -127,13 +206,13 @@ function Poster({ track, playlist }: PosterProps) {
         <div className="text-[10px] sm:text-[15px]">
           <h4 className="font-bold truncate w-40">{track.title}</h4>
           <h6 className="capitalize truncate">
-            {track?.subtitle.replace("-", " ") || ""}
+            {track?.subtitle?.replace("-", " ") || ""}
           </h6>
         </div>
       </div>
 
       <div className=" hidden group-hover:block absolute top-4 right-4">
-        <Heart hasLiked={hasLiked} handleLike={handleLike} />
+        <Heart handleLike={handleLike} hasLiked={hasLiked} track={track} />
       </div>
       
     </div>

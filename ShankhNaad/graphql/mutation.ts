@@ -2,10 +2,9 @@ import { gql } from '@apollo/client';
 
 export const SAVE_TRACK = gql`
 mutation trackCreate($track: TrackInput!) {
-        trackSave(track: $track) {
+    trackSave(track: $track) {
         id
         subjectId
-        key
         title
         subtitle
         username
@@ -13,11 +12,14 @@ mutation trackCreate($track: TrackInput!) {
         image
         likes
         n_listens
-        description
+        lyrics
         album
         value
-        purchasable
+        nftIpfsCid
         nftCardanoTxId
+        nftName
+        nftDescription
+        nftAssetName
         createdAt
         updatedAt
     }
@@ -26,10 +28,9 @@ mutation trackCreate($track: TrackInput!) {
 
 export const MINT_TRACK = gql`
 mutation trackCreate($track: TrackInput!) {
-        trackMintNft(track: $track) {
+    trackMintNft(track: $track) {
         id
         subjectId
-        key
         title
         subtitle
         username
@@ -37,11 +38,14 @@ mutation trackCreate($track: TrackInput!) {
         image
         likes
         n_listens
-        description
+        lyrics
         album
         value
-        purchasable
+        nftIpfsCid
         nftCardanoTxId
+        nftName
+        nftDescription
+        nftAssetName
         createdAt
         updatedAt
     }
@@ -54,9 +58,21 @@ mutation Delete_Track($id: ID!) {
 }
 `;
 
-export const DELETE_LIKED_TRACK = gql`
-mutation Delete_Track($id: ID!) {
-  likedtracksDelete(id: $id)
+export const SUBMIT_TRANSACTION = gql`
+mutation Submit_Transaction($cbor: String) {
+    submitTransaction(cbor: $cbor)
+}
+`;
+
+export const SEND_TRANSACTION = gql`
+mutation transfer ($transfer: TransferDto!) {
+    transfer (transfer: $transfer)
+ }
+`;
+
+export const TRANSFER_NFT = gql`
+mutation Transfer ($transfer: TransferDto!) {
+    transfer (transfer: $transfer)
 }
 `;
 
@@ -120,6 +136,12 @@ mutation userCreate($user: UserInput!) {
             createdAt
             updatedAt
         }
+        myTracksId
+        likedTracksId
+        historyTracksId
+        subscriptionEndDate
+        rewards
+        likes
         createdAt
         updatedAt
     }
@@ -127,28 +149,8 @@ mutation userCreate($user: UserInput!) {
 `;
 
 export const LIKE_TRACK = gql`
-mutation trackLike($track: TrackInput!) {
-    likedTracksSave(track: $track) {
-        track{
-            id
-            subjectId
-            key
-            title
-            subtitle
-            username
-            music
-            image
-            likes
-            n_listens
-            description
-            album
-            value
-            purchasable
-            nftCardanoTxId
-            createdAt
-            updatedAt
-        }
-    user{
+mutation trackLike($user: UserInput!) {
+    userSave(user: $user) {
         id
         subjectId
         username
@@ -161,7 +163,7 @@ mutation trackLike($track: TrackInput!) {
             publicKey
             balance
             assets {
-                    id
+                id
                 subjectId
                 name
                 fingerprint
@@ -176,9 +178,14 @@ mutation trackLike($track: TrackInput!) {
             createdAt
             updatedAt
         }
+        myTracksId
+        likedTracksId
+        historyTracksId
+        subscriptionEndDate
+        rewards
+        likes
         createdAt
         updatedAt
-    }
     }
 }
 `;

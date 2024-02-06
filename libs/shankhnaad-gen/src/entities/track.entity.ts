@@ -2,7 +2,6 @@ import { Guard, Entity, EntityProps, Result } from '@logosphere/sdk';
 import { Genre } from '../shankhnaad.model';
 
 interface TrackProps extends EntityProps {
-  key?: number;
   title?: string;
   subtitle?: string;
   username?: string;
@@ -10,10 +9,9 @@ interface TrackProps extends EntityProps {
   image?: string;
   likes?: number;
   n_listens?: number;
-  description?: string;
+  lyrics?: string;
   album?: Genre[];
   value?: number;
-  purchasable?: number;
   nftIpfsCid?: string;
   nftCardanoTxId?: string;
   nftName?: string;
@@ -22,9 +20,6 @@ interface TrackProps extends EntityProps {
 }
 
 export class Track extends Entity<TrackProps> {
-  get key(): number {
-    return this.props.key;
-  }
   get title(): string {
     return this.props.title;
   }
@@ -46,17 +41,14 @@ export class Track extends Entity<TrackProps> {
   get n_listens(): number {
     return this.props.n_listens;
   }
-  get description(): string {
-    return this.props.description;
+  get lyrics(): string {
+    return this.props.lyrics;
   }
   get album(): Genre[] {
     return this.props.album;
   }
   get value(): number {
     return this.props.value;
-  }
-  get purchasable(): number {
-    return this.props.purchasable;
   }
   get nftIpfsCid(): string {
     return this.props.nftIpfsCid;

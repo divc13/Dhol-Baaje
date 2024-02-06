@@ -7,6 +7,9 @@ tmp
 
 # dependencies
 node_modules
+Shankhnaad/node_modules
+.env
+.npmrc
 
 # IDEs and editors
 /.idea

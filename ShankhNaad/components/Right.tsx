@@ -22,9 +22,8 @@ function Right({ recentlyPlayed }: RightProps) {
           </div>
 
           <div className="space-y-4 overflow-y-scroll overflow-x-hidden h-[100px] md:h-[580px] scrollbarThin">
-            {[...recentlyPlayed].reverse().map((track, i) => (
+            {[...recentlyPlayed].map((track) => (
               <RecentlyPlayed
-                key={i}
                 track={track}
                 button={false}
                 playlist={recentlyPlayed}

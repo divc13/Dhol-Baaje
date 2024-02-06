@@ -108,6 +108,31 @@ class User {
     doc: 'Subscription End Date',
   })
   subscriptionEndDate: string;
+
+  @Prop({ type: () => [String], index: false})
+  myTracksId: Array<string>;
+  
+  @Prop({ type: () => [String], index: false})
+  likedTracksId: Array<string>;
+  
+  @Prop({ type: () => [String], index: false})
+  historyTracksId: Array<string>;
+
+  @Prop({
+    doc: 'Reward to be given to the user',
+    examples: [
+      '0', '1000'
+    ],
+  })
+  rewards: number;
+
+  @Prop({
+    doc: 'number of likes gained by the user in a month',
+    examples: [
+      '0', '1000'
+    ],
+  })
+  likes: number;
 }
 
 export enum Genre {
@@ -137,11 +162,6 @@ registerEnum(Genre, 'Genre');
 
 @Ent('track', { nft: true })
 class Track {
-  @Prop({
-    examples: ['123456789'],
-  })
-  key: number;
-
   @Prop({
     examples: ['Song name'],
   })
@@ -178,70 +198,13 @@ class Track {
   @Prop({
     examples: ['a great song!!!'],
   })
-  description: string;
+  lyrics: string;
 
-  @Prop({ type: () => [Genre], })
+  @Prop({ type: () => [Genre], index: false})
   album: Genre[];
 
   @Prop({
     examples: ['123456789'],
   })
   value: number;
-
-  @Prop({
-    examples: ['123456789'],
-  })
-  purchasable: number;
-}
-
-@Ent('reorderprops')
-class ReorderProps {
-  @Prop({ type: () => [Track], })
-  list: Track[];
-
-  @Prop({
-    examples: ['0'],
-  })
-  startIndex: number;
-
-  @Prop({
-    examples: ['123456789'],
-  })
-  endIndex: number;
-}
-
-@Ent('album')
-class Album {
-  @Prop({ type: () => Genre, })
-  genre: Genre;
-
-  @Prop({ type: () => [Track], })
-  track: Track[];
-}
-
-@Ent('liked_tracks')
-class LikedTracks {
-  @Prop()
-  username: string;
-
-  @Prop({ type: () => [Track], })
-  track: Track[];
-}
-
-@Ent('track_history')
-class TrackHistory {
-  @Prop()
-  username: string;
-
-  @Prop({ type: () => [Track], })
-  track: Track[];
-}
-
-@Ent('my_tracks')
-class MyTracks {
-  @Prop()
-  username: string;
-
-  @Prop({ type: () => [Track], })
-  track: Track[];
 }

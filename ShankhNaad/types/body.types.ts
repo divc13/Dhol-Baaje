@@ -1,7 +1,6 @@
 export interface Track {
   id: string;
   subjectId: number;
-  key: string;
   title: string;
   subtitle: string;
   username: string;
@@ -9,10 +8,9 @@ export interface Track {
   image: string;
   likes: number;
   n_listens: number;
-  description: string;
+  lyrics: string;
   album: Genre[];
   value: number;
-  purchasable: number;
   nftIpfsCid: string;
   nftCardanoTxId: string;
   nftName: string;
@@ -45,36 +43,21 @@ export enum Genre {
   Sad = "Sad"
 };
 
-export interface Album {
-    genre: Genre;
-    tracks: Track[];
-}
-
 export interface Wallet {
   address: string;
 }
 
 export interface User {
-  id: Id;
+  id: string;
   username: string;
   wallet: Wallet;
+  myTracksId: Array<String>;
+  likedTracksId: Array<String>;
+  historyTracksId: Array<String>;
   subscriptionEndDate: string;
-}
-
-export interface LikedTracks {
-    id: Id;
-    username: string;
-    tracks: Track[];
-}
-
-export interface TrackHistory {
-  username: string;
-  tracks: Track[];
-}
-
-export interface MyTracks {
-  username: string;
-  tracks: Track[];
+  rewards: number;
+  updatedAt: string;
+  createdAt: string;
 }
 
 export interface ReorderProps {

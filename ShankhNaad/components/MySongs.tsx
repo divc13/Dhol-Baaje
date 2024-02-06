@@ -4,22 +4,36 @@ import { HeartIcon } from "@heroicons/react/solid";
 import { BiHeadphone } from "react-icons/bi";
 import { FaCoins } from "react-icons/fa";
 import { BsFillPlayFill } from "react-icons/bs";
-import { MusicDataContext } from "./MusicDataContext";
 import { playingTrackState, playState } from "../atoms/playerAtom";
 import { Track } from "../types/body.types"
 import TrackContext from "../hooks/trackContext";
+import { useQuery } from '@apollo/client';
+import { useEffect, useState } from "react";
+import { GET_SONGS_BY_IDS } from "../graphql/query";
+import { LiveUser } from "../atoms/playerAtom";
 
 
 function MySongs() {
-  const musicData = useContext(MusicDataContext);
-  const musicDataCopy = [...musicData];
-  const Tracks = musicDataCopy;
   const [play, setPlay] = useRecoilState<boolean>(playState);
   const playingTrack = useRecoilValue<Track>(playingTrackState);
   const { chooseTrack } = useContext(TrackContext);
+  const [myTracks, setMyTracks] = useState<Track[]>([]);
+  const liveUser = useRecoilValue(LiveUser);
+  const { data } = useQuery(GET_SONGS_BY_IDS, {
+    variables: {
+        idList: liveUser.myTracksId,
+    }
+});
+
+  useEffect(() => {
+    if (data) {
+      const mytracks = data.trackFindManyById ? data.trackFindManyById : [];
+      setMyTracks(mytracks);
+    }
+  }, [data]);
 
   const handlePlay = (track: Track) => {
-    chooseTrack(track, Tracks);
+    chooseTrack(track, myTracks);
     if (!playingTrack) {
       setPlay(!play);
     }
@@ -31,7 +45,7 @@ function MySongs() {
 
   return (
     <div className="flex-col items-center px-2 py-1 border border-[#262626] rounded-lg">
-      {Tracks.map((track, i) => (
+      {myTracks.map((track) => (
       <div className="flex w-full gap-3 items-center py-2">
         <img
           src={"https://i.ytimg.com/vi/WcK88pFd2Lk/maxresdefault.jpg"}
@@ -43,7 +57,7 @@ function MySongs() {
             {track.title}
           </h4>
           <p className="truncate text-xs text-[#686868] font-semibold hover:underline">
-            {(track?.owner?.username || "").replace("-", " ").slice(0, 15) || ""}
+            {(track?.subtitle || "").replace("-", " ").slice(0, 15) || ""}
           </p>
         </div>
         <div className="flex px-5 hover:scale-110">

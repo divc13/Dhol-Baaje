@@ -1,9 +1,8 @@
 # Dhol Baaje - Rhythmic NFTs
-![ezgif com-optimize](https://github.com/divc13/Dhol-Baaje/assets/110289042/328116bf-bad4-4e8a-9ab9-7a1bef90d1b6)
 
 ## Overview
 
-Dhol Baaje is a decentralized application (DApp) that empowers artists to upload their music tracks and receive valuations from the community, based on the number of likes and listens on their tracks. Users can discover and explore a wide variety of music, support artists, and engage with a vibrant musical ecosystem.
+Dhol Baaje is a decentralized application (DApp) that empowers artists to upload their music tracks and receive valuations from the community. Users can discover and explore a wide variety of music, support artists, and engage with a vibrant musical ecosystem.
 
 ## Features
 
@@ -15,13 +14,6 @@ Dhol Baaje is a decentralized application (DApp) that empowers artists to upload
 ## Acknowledgments
 
 We would like to extend our appreciation to the [Logosphere](https://github.com/ikigai-github/logosphere) library, a tool integration platform, for seamlessly integrating essential tools and capabilities that have significantly contributed to the development of this project. Our heartfelt thanks to the Logosphere team for their exceptional work and dedication!
-
-## Screenshots
-![1](https://github.com/divc13/Dhol-Baaje/assets/110289042/3adc34c5-2082-49c9-a05d-82493c896ac3)
-![WhatsApp Image 2023-10-09 at 02 53 51_f7dddfd9](https://github.com/divc13/Dhol-Baaje/assets/110289042/9142e33a-b9f6-49d2-97c1-271d568b30a3)
-![WhatsApp Image 2023-10-09 at 03 09 54_4b5ddd83](https://github.com/divc13/Dhol-Baaje/assets/110289042/b2b4cab5-8f73-4fc3-8a87-244a45ea40c7)
-![4](https://github.com/divc13/Dhol-Baaje/assets/110289042/bc721686-a933-4f24-824c-3150232e84dd)
-![5](https://github.com/divc13/Dhol-Baaje/assets/110289042/a803860c-f260-4b60-b0cf-39a1e6595163)
 
 ## Installation
 
@@ -62,24 +54,24 @@ pnpm nx g @logosphere/sdk:init
 Build the Dhol Baaje application.
 
 ```
-pnpm nx affected:build --base=main~1
+pnpm nx affected:build
 ```
 
-### Step 6: Configure Logosphere API for Music
+### Step 6: Configure Logosphere API for Shankhnaad
 
-Configure the Logosphere API module for music.
+Configure the Logosphere API module for shankhnaad.
 
 ```
-pnpm nx g @logosphere/sdk:api --module music
+pnpm nx g @logosphere/sdk:api --module shankhnaad
 ```
 
-### Step 7: Change the /path/to/install/libs/music-gen/src/resolvers/track.resolver.ts
+### Step 7: Set Environment Variables
 
-Search for **FindOneByUsername** and replace all its occurances by **FindOneByEmail**.
+Rename .env.sample to .env and set the necessary environment variables for the application. 
 
-### Step 8: Set Environment Variables
+### Step 8: Setting .npmrc
 
-Set the necessary environment variables for the application.
+Rename .npmrc.sample to .npmrc and set the npm authtoken as shown in sample for the application. 
 
 ### Step 9: Run the Application
 

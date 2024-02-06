@@ -2,8 +2,3 @@ export * from './wallet-asset.dto.map';
 export * from './wallet.dto.map';
 export * from './user.dto.map';
 export * from './track.dto.map';
-export * from './reorderprops.dto.map';
-export * from './album.dto.map';
-export * from './liked-tracks.dto.map';
-export * from './track-history.dto.map';
-export * from './my-tracks.dto.map';

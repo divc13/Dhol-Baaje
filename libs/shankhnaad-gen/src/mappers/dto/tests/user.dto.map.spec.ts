@@ -44,6 +44,11 @@ describe('User Dto Map', () => {
         ],
       },
       subscriptionEndDate: 'abcdefg',
+      myTracksId: ['abcdefg'],
+      likedTracksId: ['abcdefg'],
+      historyTracksId: ['abcdefg'],
+      rewards: 1,
+      likes: 1,
     };
     mapper = new UserDtoMap();
   });
@@ -58,6 +63,11 @@ describe('User Dto Map', () => {
     expect(user.updatedAt instanceof Date).toBeTruthy();
     expect(user.username).toBe('babingo_whoelse@gmail.com');
     expect(user.subscriptionEndDate).toBe('abcdefg');
+    expect(user.myTracksId).toStrictEqual(['abcdefg']);
+    expect(user.likedTracksId).toStrictEqual(['abcdefg']);
+    expect(user.historyTracksId).toStrictEqual(['abcdefg']);
+    expect(user.rewards).toBe(1);
+    expect(user.likes).toBe(1);
   });
 
   it('should serialize User to DTO data', () => {

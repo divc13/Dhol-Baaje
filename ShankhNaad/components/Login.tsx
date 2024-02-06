@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { CardanoWallet, useWallet } from '@meshsdk/react';
 import { checkSignature, generateNonce } from '@meshsdk/core';
-import { useQuery, useLazyQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { GET_ALL_USERS } from '../graphql/query';
 import { useRecoilState } from "recoil";
 import { LiveUser } from "../atoms/playerAtom";
@@ -17,7 +17,6 @@ const Login = () => {
   const [activeUser, setActiveUser] = useRecoilState(LiveUser);
   const referer = router.query.referer as string | "/";
   const currentDate = new Date();
-  console.log(router.query);
 
   if (activeUser && !referer) {
     router.push({
@@ -36,7 +35,6 @@ const Login = () => {
         console.log("success");
         const addr = await wallet.getChangeAddress();
         const liveUser = data.userFindAll.filter((user) =>{ return user && user.wallet.address === addr});
-        console.log(liveUser);
         
         if (!data || liveUser.length == 0){
           setValidity('Wallet not Registered');
@@ -45,15 +43,20 @@ const Login = () => {
         else
         {
           setActiveUser({
+            id: liveUser[0].id,
             username: liveUser[0].username,
             wallet: {
               address: liveUser[0].wallet.address,
             },
+            myTracksId: liveUser[0].myTracksId,
+            likedTracksId: liveUser[0].likedTracksId,
+            historyTracksId: liveUser[0].historyTracksId,
             subscriptionEndDate: liveUser[0].subscriptionEndDate,
-        });
+            rewards: liveUser[0].rewards,
+            createdAt: liveUser[0].createdAt,
+            updatedAt: liveUser[0].updatedAt,
+          });
           setValidity('User Logged In');
-          console.log(await wallet.getRewardAddresses());
-          
           if (referer && (new Date(liveUser.subscriptionEndDate) > currentDate)) {
             router.push(referer);
           }
@@ -63,8 +66,6 @@ const Login = () => {
               query: { referer },
             });
           }
-          
-  
         }
       }
       else {
@@ -81,13 +82,13 @@ const Login = () => {
   }
   
   async function frontendSignMessage(nonce) {
-      // try {
+      try {
         const userAddress = (await wallet.getRewardAddresses())[0];
         const signature = await wallet.signData(userAddress, nonce);
         await backendVerifySignature(nonce, userAddress, signature);
-      // } catch (error) {
-      //     console.log("failure");
-      // }
+      } catch (error) {
+          console.log("failure");
+      }
     }
 
      

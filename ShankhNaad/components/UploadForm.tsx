@@ -1,21 +1,35 @@
 import React, { useState, useEffect } from 'react';
-import { useMutation } from '@apollo/client';
-import { MINT_TRACK } from '../graphql/mutation';
+import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
+import { MINT_TRACK, SAVE_USER, SUBMIT_TRANSACTION, TRANSFER_NFT } from '../graphql/mutation';
 import { Genre } from '../types/body.types';
 import pinFileToIPFS from '../pages/api/pinata/pinFiletoIPFS';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useRecoilState } from 'recoil';
 import { LiveUser } from '../atoms/playerAtom';
+import { GET_MINTING_NFT_CBOR } from '../graphql/query';
+import { useWallet } from '@meshsdk/react';
+import { Transaction, ForgeScript } from '@meshsdk/core';
+import type { Mint, AssetMetadata } from '@meshsdk/core';
 
 const albumOptions = Object.values(Genre);
 
 const UploadForm: React.FC = () => {
-    const liveUser = useRecoilValue(LiveUser);
-    console.log(liveUser);
+    const [liveUser, setliveUser] = useRecoilState(LiveUser);
 
-    const [SaveTrack, { data, loading, error }] = useMutation(MINT_TRACK, {
+    const [SaveTrack] = useMutation(MINT_TRACK, {
         context: {
             headers: {
                 'username': liveUser.username,
+            }
+        }
+    });
+
+    
+    const [SaveUser] = useMutation(SAVE_USER);
+    const [submit] = useMutation(SUBMIT_TRANSACTION);
+    const [transferNft] = useMutation(TRANSFER_NFT, {
+        context: {
+            headers: {
+                'seed-phrase': process.env.CARDANO_SPACED_MNEMONIC,
             }
         }
     });
@@ -23,6 +37,8 @@ const UploadForm: React.FC = () => {
     const [imageData, setImageData] = useState("Select an image file!");
     const [imageurl, setImageurl] = useState("");
     const [musicurl, setMusicurl] = useState("");
+    const [description, setDescription] = useState("");
+    const [imageNft, setImageNft] = useState("");
     const [audioData, setAudioData] = useState("Select an audio file!");
     const [formData, setFormData] = useState({
         title: '',
@@ -33,10 +49,11 @@ const UploadForm: React.FC = () => {
         album: [],
         nftIpfsCid: '',
     });
-
-    console.log(formData);
-
+    const { wallet } = useWallet();
+    
     const [filesSelected, setFilesSelected] = useState(false);
+    
+    const [getCbor] = useLazyQuery(GET_MINTING_NFT_CBOR);
 
     useEffect(() => {
         if (imageurl && musicurl && formData.title && formData.subtitle && formData.description) {
@@ -45,7 +62,6 @@ const UploadForm: React.FC = () => {
             setFilesSelected(false);
         }
     }, [musicurl, imageurl, formData.title, formData.subtitle, formData.description]);
-
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = event.target;
@@ -62,18 +78,14 @@ const UploadForm: React.FC = () => {
             return;
         }
         setImageData("Uploading ...");
-        if (file) {
-            event.target.parentElement?.classList.add('bg-green-700');
-        }
-        else {
-            event.target.parentElement?.classList.remove('bg-green-700');
-        }
         pinFileToIPFS(file)
             .then((ipfsHash) => {
                 if (ipfsHash) {
+                    formData.nftIpfsCid = ipfsHash;
                     const url = `${process.env.GATEWAY}/ipfs/${ipfsHash}`;
                     console.log('File uploaded successfully. URL:', url);
                     setImageurl(url);
+                    setImageNft(`${ipfsHash}`);
                     setImageData(event.target.value.replace(/.*(\/|\\)/, '') || "Select an image file!")
                 } else {
                     console.log('File upload failed.');
@@ -90,16 +102,9 @@ const UploadForm: React.FC = () => {
             return;
         }
         setAudioData("Uploading ...");
-        if (file) {
-            event.target.parentElement?.classList.add('bg-green-700');
-        }
-        else {
-            event.target.parentElement?.classList.remove('bg-green-700');
-        }
         try {
             const ipfsHash = await pinFileToIPFS(file);
             if (ipfsHash) {
-                formData.nftIpfsCid = ipfsHash;
                 const url = `${process.env.GATEWAY}/ipfs/${ipfsHash}`;
                 console.log('File uploaded successfully. URL:', url);
                 setMusicurl(url);
@@ -130,8 +135,43 @@ const UploadForm: React.FC = () => {
         });
 
     };
-    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+
+    const Transact = async (response, data) => {
+
+        const forgingScript = ForgeScript.withOneSignature(liveUser.wallet.address);
+
+        const tx = new Transaction({ initiator: wallet });
+
+        // define asset#1 metadata
+        const assetMetadata: AssetMetadata = {
+            "name": response.data.trackMintNft.nftAssetName,
+            "image": `ipfs://${imageNft}`,
+            "mediaType": "image/jpg",
+            "description": response.data.trackMintNft.nftDescription
+        };
+        const asset1: Mint = {
+            assetName: 'MeshToken',
+            assetQuantity: '1',
+            metadata: assetMetadata,
+            label: '721',
+            recipient: liveUser.wallet.address,
+        };
+        tx.mintAsset(
+            forgingScript,
+            asset1,
+        );
+
+        const unsignedTx = await tx.build();
+        const signedTx = await wallet.signTx(unsignedTx);
+        const txHash = await wallet.submitTx(signedTx);
+        console.log(await txHash);
+        alert(`Asset minted ${txHash}`);
+
+    }
+
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        
         SaveTrack({
             variables: {
                 track: {
@@ -139,19 +179,39 @@ const UploadForm: React.FC = () => {
                     subtitle: formData.subtitle,
                     music: musicurl,
                     image: imageurl,
-                    description: formData.description,
+                    lyrics: formData.description,
                     album: formData.album,
                     likes: 0,
                     n_listens: 0,
-                    nftIpfsCid: "QmPugZiCbG56oHREWrdDBrHqjMv9pA91PdLuD5fef8qwbL",
-                    nftAssetName: "Dhol Baaje",
+                    value: 1,
+                    nftIpfsCid: imageNft,
+                    nftAssetName: "Dhol Baaje - " + formData.title,
                     nftName: "Dhol Baaje - " + formData.title,
                     nftDescription: "Dhol Baaje Song - " + formData.description,
                     username: liveUser.username,
                 }
             }
-        }).then(() => {
+        }).then((response) => {
             alert('Form submitted successfully!');
+            setliveUser({
+                ...liveUser,
+                myTracksId: liveUser.myTracksId !== null ? [...liveUser.myTracksId, response.data.trackMintNft.id] : [response.data.trackMintNft.id],
+            });
+            SaveUser({
+                variables: {
+                    user: {
+                        id: liveUser.id,
+                        myTracksId: liveUser.myTracksId !== null ? [...liveUser.myTracksId, response.data.trackMintNft.id] : [response.data.trackMintNft.id],
+                        likedTracksId: liveUser.likedTracksId,
+                        historyTracksId: liveUser.historyTracksId,
+                        createdAt: liveUser.createdAt,
+                        updatedAt: liveUser.updatedAt,
+                    }
+                }
+            }).then((data) => {
+                Transact(response, data);
+            });
+            // Transact(response);
             formData.music = '';
             formData.title = '';
             formData.subtitle = '';
@@ -161,12 +221,7 @@ const UploadForm: React.FC = () => {
             formData.nftIpfsCid = '';
             setAudioData("Select an audio file!");
             setImageData("Select an image file!");
-
-        }).catch((error) => {
-            alert('Form submission failed.');
-            console.error('Error:', error);
-        });
-
+        })
     }
 
     return (
@@ -187,7 +242,7 @@ const UploadForm: React.FC = () => {
                             </div>
                             <div className="mb-4 flex items-center">
                                 <p>Cover Art:</p>
-                                <label className="border border-gray-300 rounded p-2 m-2 mr-0 transparant hover:bg-green-700 max-w-[80%]" htmlFor="image">
+                                <label className={`border border-gray-300 rounded p-2 m-2 mr-0 ${imageData === "Select an image file!" ? 'transparant' : 'bg-green-500'} hover:bg-green-700 max-w-[80%]`} htmlFor="image">
                                     <input type="file" id="image" name="image" required accept="image/*" onChange={handleImageChange} className="w-full hidden" />
 
                                     <p className="text-ellipsis max-w-full overflow-hidden">{imageData}</p>
@@ -195,7 +250,7 @@ const UploadForm: React.FC = () => {
                             </div>
                             <div className="mb-4 flex items-center">
                                 <p>Audio file:</p>
-                                <label className="border border-gray-300 rounded p-2 m-2 mr-0 transparant hover:bg-green-700 max-w-[80%]" htmlFor="music">
+                                <label className={`border border-gray-300 rounded p-2 m-2 mr-0 ${audioData === "Select an audio file!" ? 'transparant' : 'bg-green-500'} hover:bg-green-700 max-w-[80%]`} htmlFor="music">
                                     <input type="file" id="music" name="music" required accept="audio/*" onChange={handleMusicChange} className="w-full hidden" />
                                     <p className="text-ellipsis max-w-full overflow-hidden">{audioData}</p>
                                 </label>
